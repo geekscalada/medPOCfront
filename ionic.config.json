@@ -1,0 +1,7 @@
+{
+  "name": "alergenos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
