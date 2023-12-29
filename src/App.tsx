@@ -28,6 +28,8 @@ import UserTab from './components/UserTab';
 import { personCircle } from 'ionicons/icons';
 import  MainRoutes from './routes/MainRoutes';
 import { mappingRoutes } from './routes/MainRoutes';
+import TabBar from './components/TabBar';
+import TabBarComponent from './components/TabBar';
 
 setupIonicReact();
 
@@ -35,8 +37,6 @@ setupIonicReact();
 //todo: why this sintax? all document
 
 // todo: use render like in the ionic documentation example?
-
-// todo: other mangement of the routes?
 
 // todo: check all scafolding
 const App: React.FC = () => {
@@ -53,17 +53,13 @@ const App: React.FC = () => {
             {MainRoutes}
             {/* Aquí puedes añadir más rutas secundarias */}
           </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="perfil" href={mappingRoutes.userTab.path}>
-            <IonIcon icon={personCircle} size="large"  />
-              {/* <IonLabel>Perfil</IonLabel> */}
-            </IonTabButton>
-            <IonTabButton tab="explore" href={mappingRoutes.exploreContainer.path}>
-            <IonIcon icon={personCircle} size="large"  />
-              {/* <IonLabel>Perfil</IonLabel> */}
-            </IonTabButton>            
-          </IonTabBar>
-        </IonTabs>
+          {/* TabBar es un componente que además sirve de entrypoint para el resto,
+          de pages 
+          Podemos traernos la constante en vez de el componentes para evitar compatibilidades
+          de hijo-padre
+          */}
+          { TabBar }
+          </IonTabs>
       </IonReactRouter>      
     </IonApp>
   );
