@@ -5,27 +5,23 @@ import ExploreContainer from '../components/ExploreContainer';
 
 
 // Importa otros componentes que necesites
+  //TODO: mejorar esto. 
 
-interface RouteConfig {
+interface RouteConfig<T = any> {
   path: string;
-  component: React.FC<any>;
+  component: React.FC<T | any>;
 }
 
-interface PropsModel {
-  [key: string]: any;
-}
-
-
-export const mappingRoutes : { [key: string]: RouteConfig } = {
+export const mappingRoutes: { [key: string]: RouteConfig<any> } = {
   userTab: {
     path: '/perfil',
-    component: UserTab,
-  }, 
-  exploreContainer:{
+    component: UserTab,  // Supongamos que UserTab es un React.FC sin props específicos
+  },
+  exploreContainer: {
     path: '/explorar',
-    component: ExploreContainer,
-  },  
-} 
+    component: ExploreContainer,  // ExploreContainer es un React.FC<ContainerProps>
+  },
+};
 
 const MainRoutes = (
   <>
