@@ -10,7 +10,8 @@ import {
   IonList,
   IonButton,
 } from "@ionic/react";
-import useDebounce from "../hooks/useDebounce";
+import { useDebouncedCallback } from "use-debounce";
+import { idCardOutline } from "ionicons/icons";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
@@ -18,34 +19,25 @@ interface AddAllergenModalProps {
 
 const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 3000); // 500 ms de debounce
-  const [medicamentos, setMedicamentos] = useState<any[]>([]); // Cambia 'any' por el tipo adecuado
+  //TODO: change to string[]
+  const [medicamentos, setMedicamentos] = useState<any[]>([]);
 
-  const handleInputChange = (e: CustomEvent) => {
-    console.log("searchtermPre", searchTerm);
-    setSearchTerm(e.detail.value);
-    console.log("searchtermPost", searchTerm);
-  };
+  const debounced = useDebouncedCallback(
+    // function
+    (value) => {
+      setSearchTerm(value);
+    },
+    // delay in ms
+    500
+  );
 
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLIonInputElement>) => {
-    console.log("se ha pulsado el boton");
-    if (e.currentTarget.value) {
-      const newValue = (e.target as HTMLInputElement).value;
-      console.log("newValue", newValue);
-      setSearchTerm(newValue);
-    }
-  };
-
-  const updateSearchTerm = (searchTerm: any) => {
-    console.log("searchterm cambiado", searchTerm);
-    setSearchTerm(searchTerm);
-  };
-
+  //TODO: isolate to services
+  // TODO: change to axios
+  // TODO: async await ? 
+  // TODO: only search if we have at least 3 characters
   useEffect(() => {
-    if (debouncedSearchTerm) {
-      // Llamada a la API
-      console.log("llamando a la API con ," , debouncedSearchTerm);
-      fetch(`http://192.168.33.22:3007/alergenos/${debouncedSearchTerm}`)
+    if (searchTerm) {
+      fetch(`http://192.168.33.22:3007/alergenos/${searchTerm}`)
         .then((response) => response.json())
         .then((data) => {
           console.log(data.alergenos, "data.alergenos");
@@ -55,8 +47,10 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
         .catch((error) => {
           console.error("Error al buscar medicamentos:", error);
         });
+    } else {
+      setMedicamentos([]);
     }
-  }, [debouncedSearchTerm]);
+  }, [searchTerm]);
 
   return (
     <IonContent>
@@ -68,16 +62,17 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       <div className="ion-padding">
         <IonItem>
           <IonInput
-            label="Nombre del alérgeno"
-            onKeyDown={(e: any) => setSearchTerm(e.target.value)}
+            label="Busca tu alérgeno"
+            onKeyUp={(e: any) => debounced(e.target.value)}
             value={searchTerm}
             clearInput
           />
         </IonItem>
         <IonList>
+          {/* //TODO: add new modal to ask if you want to add a alergen */}
           {medicamentos.map((medicamento) => (
             <IonItem
-              key={medicamento}
+              key={medicamento + "id"}
               button
               onClick={() => {
                 /* Lógica para seleccionar el medicamento */
