@@ -1,14 +1,21 @@
-import './ExploreContainer.css';
+import React, { useState } from "react";
+import { IonInput } from "@ionic/react";
 
-interface ContainerProps {
-  name: string;
-}
+const ExploreContainer = () => {
+  const [valor, setValor] = useState("hola");
 
-const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
+  const manejarCambio = (e: any) => {
+    console.log(e);
+    setValor(e.detail.value);
+  };
+
   return (
-    <div className="container">
-      <strong>{name}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div>
+      <IonInput
+        value={valor}
+        onKeyDown={(e: any) => setValor(e.target.value)}
+      ></IonInput>
+      <p>Valor actual: {valor}</p>
     </div>
   );
 };

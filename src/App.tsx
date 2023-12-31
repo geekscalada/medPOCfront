@@ -46,6 +46,10 @@ setupIonicReact();
 // todo: check all scafolding
 
 // TODO: change views for web
+
+// TODO: height should be fixed to show all the content
+
+//TODO: when API calls fails, then don't show component?
 const App: React.FC = () => {
   return (
     <IonApp>
