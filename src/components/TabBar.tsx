@@ -17,7 +17,7 @@ const TabBar = (
             <IonIcon icon={barcodeSharp} size="large"  />
               {/* <IonLabel>Perfil</IonLabel> */}
             </IonTabButton>
-            <IonTabButton tab="search" href={mappingRoutes.SearchComponent.path}>
+            <IonTabButton tab="search" href={mappingRoutes.ExploreContainer.path}>
             <IonIcon icon={searchSharp} size="large"  />
               {/* <IonLabel>Perfil</IonLabel> */}
             </IonTabButton>                     
