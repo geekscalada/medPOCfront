@@ -1,30 +1,41 @@
 // ConfirmationModal.js
 
-import React from "react";
-import { IonModal, IonButton, IonContent, IonHeader, IonToolbar, IonTitle } from "@ionic/react";
+import { IonActionSheet } from "@ionic/react";
+import "../styles/confirmationAllergenSheet.scss";
 
-interface ConfirmationAllergenModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
-    allergen: string;
-    }
+interface ConfirmationAllergenSheeActionProps {
+  isOpen: boolean;
+  allergen: string;
+  onClose: () => void;
+}
 
-const ConfirmationAllergenModal : React.FC<ConfirmationAllergenModalProps> = ({ isOpen, onClose, onConfirm, allergen }) => {
+const ConfirmationAllergenSheeAction: React.FC<
+  ConfirmationAllergenSheeActionProps
+> = ({ isOpen, allergen, onClose }) => {
   return (
-    <IonModal isOpen={isOpen} onDidDismiss={onClose} >
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Confirmar Acción</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding  " class="ion-justify-content-center">
-        <p>¿Quieres añadir <b>{allergen}</b> a tu lista de alérgenos?</p>
-        <IonButton onClick={onConfirm}>Confirmar</IonButton>
-        <IonButton onClick={onClose}>Cancelar</IonButton>
-      </IonContent>
-    </IonModal>
+    <>
+      <IonActionSheet
+        isOpen={isOpen}
+        header={`¿ Deseas añadir el elemento ${allergen} ?`}
+        buttons={[
+          {
+            text: "Añadir",
+            data: {
+              action: "share",
+            },
+          },
+          {
+            text: "Cancelar",
+            role: "cancel",
+            data: {
+              action: "cancel",
+            },
+          },
+        ]}
+        onDidDismiss={onClose}
+      ></IonActionSheet>
+    </>
   );
 };
 
-export default ConfirmationAllergenModal;
+export default ConfirmationAllergenSheeAction;

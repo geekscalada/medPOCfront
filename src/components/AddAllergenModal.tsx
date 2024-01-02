@@ -1,3 +1,4 @@
+// TODO: use debounce of searchBar in ionic
 import React, { useState, useEffect } from "react";
 import {
   IonContent,
@@ -10,10 +11,11 @@ import {
   IonList,
   IonButton,
   IonSearchbar,
+  IonActionSheet,
 } from "@ionic/react";
 import { useDebouncedCallback } from "use-debounce";
-import { idCardOutline } from "ionicons/icons";
-import ConfirmationAllergenModal from "./ConfirmationAllergernModal";
+
+import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
@@ -27,17 +29,11 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   /**
    * Logic to confirmation modal
    */
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedAllergen, setSelectedAllergen] = useState("");
-
-  const handleAllergenClick = (allergen: string) => {
-    setSelectedAllergen(allergen);
-    setIsModalOpen(true);
-  };
-
-  const handleConfirm = () => {
-    // Lógica para añadir el alérgeno seleccionado a la lista del usuario
-    setIsModalOpen(false);
+  const closeConfirmationModal = () => {
+    console.log("Estamos llamando al closeConfirmationModal desde el padre");
+    setIsConfirmationModalOpen(false);
   };
 
   const debounced = useDebouncedCallback(
@@ -83,6 +79,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
             placeholder="Busca un alérgeno"
             onKeyUp={(e: any) => debounced(e.target.value)}
             value={searchTerm}
+            onIonClear={() => setSearchTerm("")}
           ></IonSearchbar>
         </IonItem>
         <IonList>
@@ -93,7 +90,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
               button
               onClick={() => {
                 setSelectedAllergen(componente);
-                setIsModalOpen(true);
+                setIsConfirmationModalOpen(true);
               }}
             >
               {componente} {/* Ajusta según la estructura de tus datos */}
@@ -116,12 +113,12 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
           Cancelar
         </IonButton>
       </div>
-      //TODO: could be this props be in the component?
-      <ConfirmationAllergenModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleConfirm}
+
+      {/* //TODO: could be this props be in the component? */}
+      <ConfirmationAllergenSheeAction
+        isOpen={isConfirmationModalOpen}
         allergen={selectedAllergen}
+        onClose={closeConfirmationModal}
       />
     </IonContent>
   );
