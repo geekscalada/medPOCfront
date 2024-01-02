@@ -9,9 +9,11 @@ import {
   IonInput,
   IonList,
   IonButton,
+  IonSearchbar,
 } from "@ionic/react";
 import { useDebouncedCallback } from "use-debounce";
 import { idCardOutline } from "ionicons/icons";
+import ConfirmationAllergenModal from "./ConfirmationAllergernModal";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
@@ -20,7 +22,23 @@ interface AddAllergenModalProps {
 const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   const [searchTerm, setSearchTerm] = useState("");
   //TODO: change to string[]
-  const [medicamentos, setMedicamentos] = useState<any[]>([]);
+  const [componentes, setComponentes] = useState<any[]>([]);
+
+  /**
+   * Logic to confirmation modal
+   */
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAllergen, setSelectedAllergen] = useState("");
+
+  const handleAllergenClick = (allergen: string) => {
+    setSelectedAllergen(allergen);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    // Lógica para añadir el alérgeno seleccionado a la lista del usuario
+    setIsModalOpen(false);
+  };
 
   const debounced = useDebouncedCallback(
     // function
@@ -33,7 +51,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
 
   //TODO: isolate to services
   // TODO: change to axios
-  // TODO: async await ? 
+  // TODO: async await ?
   // TODO: only search if we have at least 3 characters
   useEffect(() => {
     if (searchTerm) {
@@ -41,14 +59,14 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data.alergenos, "data.alergenos");
-          setMedicamentos(data.alergenos);
-          console.log("medicamentos", medicamentos);
+          setComponentes(data.alergenos);
+          console.log("medicamentos", componentes);
         })
         .catch((error) => {
           console.error("Error al buscar medicamentos:", error);
         });
     } else {
-      setMedicamentos([]);
+      setComponentes([]);
     }
   }, [searchTerm]);
 
@@ -61,24 +79,24 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       </IonHeader>
       <div className="ion-padding">
         <IonItem>
-          <IonInput
-            label="Busca tu alérgeno"
+          <IonSearchbar
+            placeholder="Busca un alérgeno"
             onKeyUp={(e: any) => debounced(e.target.value)}
             value={searchTerm}
-            clearInput
-          />
+          ></IonSearchbar>
         </IonItem>
         <IonList>
           {/* //TODO: add new modal to ask if you want to add a alergen */}
-          {medicamentos.map((medicamento) => (
+          {componentes.map((componente) => (
             <IonItem
-              key={medicamento + "id"}
+              key={componente + "id"}
               button
               onClick={() => {
-                /* Lógica para seleccionar el medicamento */
+                setSelectedAllergen(componente);
+                setIsModalOpen(true);
               }}
             >
-              {medicamento} {/* Ajusta según la estructura de tus datos */}
+              {componente} {/* Ajusta según la estructura de tus datos */}
             </IonItem>
           ))}
         </IonList>
@@ -98,6 +116,13 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
           Cancelar
         </IonButton>
       </div>
+      //TODO: could be this props be in the component?
+      <ConfirmationAllergenModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirm}
+        allergen={selectedAllergen}
+      />
     </IonContent>
   );
 };
