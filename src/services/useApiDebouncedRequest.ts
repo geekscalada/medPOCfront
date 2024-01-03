@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { useState, useEffect } from "react";
 
 interface dataResponse {
@@ -11,46 +11,59 @@ interface dataResponse {
 // TODO: check dataErrorValidations
 
 const useApiDebouncedRequest = (
-  url: string,
-  searchTerm: string,
-  minimumCharacters?: number,
-  options?: AxiosRequestConfig
+  options: AxiosRequestConfig,
+  minimumCharacters?: number
 ): { data: dataResponse | null; loading: boolean; error: any } => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const composedUrl = `${url}/${searchTerm}`;
+  try {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  async function fetchData() {
-    try {
-      const response = await fetch(composedUrl);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+    let url = "";
+    let searchTerm: string | undefined = "";
+
+    if (options.url) {
+      url = options.url;
+      searchTerm = url.split("/").pop();
+    } else {
+      throw new Error("url is required");
+    }
+
+    async function fetchData() {
+      try {
+        const response = await axios(options);
+        console.log("response.data", response.data);
+        setData(response.data);
+      } catch (error: any) {
+        setError(error);
+      } finally {
+        setLoading(false);
       }
-      const json = await response.json();
-      setData(json);
-    } catch (error: any) {
-      setError(error);
-    } finally {
-      setLoading(false);
     }
+
+    useEffect(() => {
+      console.log("ejecutando el useEffect con searchTerm", searchTerm);
+
+      if (
+        (minimumCharacters &&
+          searchTerm &&
+          searchTerm.length < minimumCharacters) ||
+        !searchTerm
+      ) {
+        setData(null);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+
+      fetchData();
+    }, [options.url]);
+
+    return { data, loading, error };
+  } catch (error: any) {
+    console.log("Error in useApiDebouncedRequest", error);
+    return error;
   }
-
-  useEffect(() => {
-    if (
-      (minimumCharacters && searchTerm.length < minimumCharacters) ||
-      !searchTerm
-    ) {
-      setData(null);
-      setLoading(false);
-      setError(null);
-      return;
-    }
-
-    fetchData();
-  }, [searchTerm]);
-
-  return { data, loading, error };
 };
 
 export default useApiDebouncedRequest;

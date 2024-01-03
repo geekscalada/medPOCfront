@@ -1,4 +1,5 @@
-// TODO: use debounce of searchBar in ionic instead of useDebounce
+// TODO: Important change!
+// TODO: use debounce of searchBar in ionic instead of useDebounce because breaks the UI
 import React, { useState, useEffect } from "react";
 import {
   IonContent,
@@ -17,12 +18,15 @@ import { useDebouncedCallback } from "use-debounce";
 
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
+import { Axios, AxiosRequestConfig } from "axios";
+import { options } from "ionicons/icons";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
 }
 
 const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
+  console.log("render AddAllergenModal");
   const [searchTerm, setSearchTerm] = useState("");
   //TODO: change to string[]
   const [componentes, setComponentes] = useState<string[]>([]);
@@ -42,16 +46,19 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       setSearchTerm(value);
     },
     // delay in ms
-    200
+    500
   );
+
+  // Isolate DATA to globals
+  const optionsGet: AxiosRequestConfig = {
+    method: "GET",
+    url: `http://192.168.33.22:3007/alergenos/${searchTerm}`,
+    headers: { "Content-Type": "application/json" },
+  };
 
   // This hook refreshes the data when the searchTerm changes
   // TODO: Implement loadings
-  const { data, loading, error } = useApiDebouncedRequest(
-    "http://192.168.33.22:3007/alergenos",
-    searchTerm,
-    2
-  );
+  const { data, loading, error } = useApiDebouncedRequest(optionsGet, 2);
 
   useEffect(() => {
     // We refresh data when hook of useApiDebouncedRequest changes
