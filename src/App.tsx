@@ -39,7 +39,9 @@ import TabBarComponent from "./components/TabBar";
 
 setupIonicReact();
 
-//todo: why this sintax? all document
+// TODO: management of errors
+
+// todo: why this sintax? all document
 
 // todo: use render like in the ionic documentation example?
 
@@ -48,6 +50,8 @@ setupIonicReact();
 // TODO: change views for web
 
 // TODO: height should be fixed to show all the content
+
+// TODO: when api is down, then profile page is re-rendering and doing calls in a bucle
 
 //TODO: when API calls fails, then don't show component?
 const App: React.FC = () => {

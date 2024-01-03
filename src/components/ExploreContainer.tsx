@@ -1,22 +1,25 @@
-import React, { useState } from "react";
-import { IonInput } from "@ionic/react";
+import React, { FC, useState } from "react";
+import { IonInput, IonSearchbar } from "@ionic/react";
+import useApiRequest from "../services/useApiDebouncedRequest";
 
-const ExploreContainer = () => {
-  const [valor, setValor] = useState("hola");
+const ExploreContainer: any = () => {
+  console.log("renderizando componente");
 
-  const manejarCambio = (e: any) => {
-    console.log(e);
-    setValor(e.detail.value);
-  };
+  const [valor, setValor] = useState("");
+
+  // const { data, loading, error } = useApiRequest(
+  //   "http://192.168.33.22:3007/alergenos/pl"
+  // );
 
   return (
-    <div>
-      <IonInput
+    <>
+      <IonSearchbar
+        placeholder="Busca un alérgeno"
         value={valor}
-        onKeyDown={(e: any) => setValor(e.target.value)}
-      ></IonInput>
+        onKeyUp={(e: any) => setValor(e.target.value)}
+      ></IonSearchbar>
       <p>Valor actual: {valor}</p>
-    </div>
+    </>
   );
 };
 
