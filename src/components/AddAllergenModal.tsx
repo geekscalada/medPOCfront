@@ -1,4 +1,4 @@
-// TODO: use debounce of searchBar in ionic
+// TODO: use debounce of searchBar in ionic instead of useDebounce
 import React, { useState, useEffect } from "react";
 import {
   IonContent,
@@ -16,6 +16,7 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
+import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
@@ -24,7 +25,7 @@ interface AddAllergenModalProps {
 const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   const [searchTerm, setSearchTerm] = useState("");
   //TODO: change to string[]
-  const [componentes, setComponentes] = useState<any[]>([]);
+  const [componentes, setComponentes] = useState<string[]>([]);
 
   /**
    * Logic to confirmation modal
@@ -32,7 +33,6 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedAllergen, setSelectedAllergen] = useState("");
   const closeConfirmationModal = () => {
-    console.log("Estamos llamando al closeConfirmationModal desde el padre");
     setIsConfirmationModalOpen(false);
   };
 
@@ -42,29 +42,27 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       setSearchTerm(value);
     },
     // delay in ms
-    500
+    200
   );
 
-  //TODO: isolate to services
-  // TODO: change to axios
-  // TODO: async await ?
-  // TODO: only search if we have at least 3 characters
+  // This hook refreshes the data when the searchTerm changes
+  // TODO: Implement loadings
+  const { data, loading, error } = useApiDebouncedRequest(
+    "http://192.168.33.22:3007/alergenos",
+    searchTerm,
+    2
+  );
+
   useEffect(() => {
-    if (searchTerm) {
-      fetch(`http://192.168.33.22:3007/alergenos/${searchTerm}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.alergenos, "data.alergenos");
-          setComponentes(data.alergenos);
-          console.log("medicamentos", componentes);
-        })
-        .catch((error) => {
-          console.error("Error al buscar medicamentos:", error);
-        });
-    } else {
-      setComponentes([]);
+    // We refresh data when hook of useApiDebouncedRequest changes
+    // TODO: Implement toasts of errors
+    if (error) {
+      console.log("Error");
+      return;
     }
-  }, [searchTerm]);
+
+    setComponentes(data?.alergenos ?? []);
+  }, [data, error]);
 
   return (
     <IonContent>
@@ -83,7 +81,6 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
           ></IonSearchbar>
         </IonItem>
         <IonList>
-          {/* //TODO: add new modal to ask if you want to add a alergen */}
           {componentes.map((componente) => (
             <IonItem
               key={componente + "id"}
@@ -114,7 +111,6 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
         </IonButton>
       </div>
 
-      {/* //TODO: could be this props be in the component? */}
       <ConfirmationAllergenSheeAction
         isOpen={isConfirmationModalOpen}
         allergen={selectedAllergen}
