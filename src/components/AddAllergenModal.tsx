@@ -7,19 +7,15 @@ import {
   IonToolbar,
   IonTitle,
   IonItem,
-  IonLabel,
-  IonInput,
   IonList,
   IonButton,
   IonSearchbar,
-  IonActionSheet,
 } from "@ionic/react";
 import { useDebouncedCallback } from "use-debounce";
-
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
-import { Axios, AxiosRequestConfig } from "axios";
-import { options } from "ionicons/icons";
+import { AxiosRequestConfig } from "axios";
+import { ArrayAllergens } from "../models/types/types";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
@@ -58,7 +54,10 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
 
   // This hook refreshes the data when the searchTerm changes
   // TODO: Implement loadings
-  const { data, loading, error } = useApiDebouncedRequest(optionsGet, 2);
+  const { data, loading, error } = useApiDebouncedRequest<ArrayAllergens>(
+    optionsGet,
+    2
+  );
 
   useEffect(() => {
     // We refresh data when hook of useApiDebouncedRequest changes
@@ -68,7 +67,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       return;
     }
 
-    setComponentes(data?.alergenos ?? []);
+    setComponentes(data?.allergens ?? []);
   }, [data, error]);
 
   return (

@@ -1,19 +1,12 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { useState, useEffect } from "react";
 
-interface dataResponse {
-  alergenos: string[];
-}
-
-//TODO: implementar axios
-//TODO: implement generics for dataType
-// TODO: implement options to AxiosRequestConfig
 // TODO: check dataErrorValidations
 
-const useApiDebouncedRequest = (
+const useApiDebouncedRequest = <T>(
   options: AxiosRequestConfig,
   minimumCharacters?: number
-): { data: dataResponse | null; loading: boolean; error: any } => {
+): { data: T | null; loading: boolean; error: any } => {
   try {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
