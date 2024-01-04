@@ -1,5 +1,3 @@
-// TODO: Important change!
-// TODO: use debounce of searchBar in ionic instead of useDebounce because breaks the UI
 import React, { useState, useEffect } from "react";
 import {
   IonContent,
@@ -11,7 +9,7 @@ import {
   IonButton,
   IonSearchbar,
 } from "@ionic/react";
-import { useDebouncedCallback } from "use-debounce";
+
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { AxiosRequestConfig } from "axios";
@@ -35,15 +33,6 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   const closeConfirmationModal = () => {
     setIsConfirmationModalOpen(false);
   };
-
-  const debounced = useDebouncedCallback(
-    // function
-    (value) => {
-      setSearchTerm(value);
-    },
-    // delay in ms
-    500
-  );
 
   // Isolate DATA to globals
   const optionsGet: AxiosRequestConfig = {
@@ -80,9 +69,10 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       <div className="ion-padding">
         <IonItem>
           <IonSearchbar
+            debounce={500}
             data-testid="allergens-searchbar"
             placeholder="Busca un alérgeno"
-            onKeyUp={(e: any) => debounced(e.target.value)}
+            onIonInput={(e) => setSearchTerm(e.detail.value!)}
             value={searchTerm}
             onIonClear={() => setSearchTerm("")}
           ></IonSearchbar>

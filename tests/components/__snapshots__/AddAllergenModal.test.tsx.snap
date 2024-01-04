@@ -19,6 +19,7 @@ exports[`AddAllergenModal Component > is rendered correctly 1`] = `
       <ion-item>
         <ion-searchbar
           data-testid="allergens-searchbar"
+          debounce="500"
           placeholder="Busca un alérgeno"
           value=""
         />
