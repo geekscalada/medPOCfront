@@ -7,10 +7,6 @@ const ExploreContainer: any = () => {
 
   const [valor, setValor] = useState("");
 
-  // const { data, loading, error } = useApiRequest(
-  //   "http://192.168.33.22:3007/alergenos/pl"
-  // );
-
   return (
     <>
       <IonSearchbar

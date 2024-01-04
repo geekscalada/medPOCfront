@@ -1,10 +1,7 @@
-//TODO: what is this sintax all document????
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   IonContent,
-  IonPage,
   IonLabel,
   IonList,
   IonItem,
@@ -12,11 +9,10 @@ import {
   IonToolbar,
   IonTitle,
   IonIcon,
-  IonListHeader,
   IonModal,
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
-import { airplane } from "ionicons/icons";
+
 import useModal from "../hooks/useModal";
 import AddAllergenModal from "./AddAllergenModal";
 
@@ -29,23 +25,24 @@ const UserTab: React.FC = () => {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-
-  // La función que pasas a useEffect se ejecutará después de que el renderizado esté completo. 
-  // Esto asegura que no bloqueará la visualización de la interfaz de usuario, incluso si 
+  // La función que pasas a useEffect se ejecutará después de que el renderizado esté completo.
+  // Esto asegura que no bloqueará la visualización de la interfaz de usuario, incluso si
   // la operación tarda un tiempo.
   // useEffect precisamente se usa para "efectos secundarios" es decir
   // operaciones que pueden afectar a otros componentes o no pueden ser realizadas durante el renderizado
   // Tenemos un array que es donde definimos las dependencias de useEffect.
   // Si no le pasamos nada, se ejecuta cada vez que se renderiza el componente (sin array)
   // Si le pasamos un array vacío, se ejecuta solo la primera vez que se renderiza el componente
-  // Si le pasamos un array con alguna variable, y Si alguna de estas dependencias cambia entre renderizados, 
-  // React volverá a ejecutar el efecto después de actualizar el DOM. 
+  // Si le pasamos un array con alguna variable, y Si alguna de estas dependencias cambia entre renderizados,
+  // React volverá a ejecutar el efecto después de actualizar el DOM.
   // Es decir primero renderiza las lógicas del componente para determinar que debe de verse a nivel de UI
   // Después actualiza lo que ha de verse en el DOM, si algo ha cambiado, por ejemplo un mensaje
   // Después, ejecuta la función del efecto.
   useEffect(() => {
+    //TODO: isolate URLS to global
     const apiUrl = "http://192.168.33.22:3007"; // Asegúrate de que la URL sea correcta
 
+    //TODO: isolate API calls to a service
     axios
       .get(apiUrl)
       .then((response) => {
@@ -113,6 +110,7 @@ const UserTab: React.FC = () => {
   );
 };
 
+//TODO: this is not in use now!
 UserTab.defaultProps = {
   nombre: "NombreDefault",
 };
