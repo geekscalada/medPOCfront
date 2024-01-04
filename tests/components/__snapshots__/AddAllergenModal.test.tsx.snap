@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AddAllergenModal Component > is rendered correctly 1`] = `
+<DocumentFragment>
+  <ion-content>
+    <ion-header>
+      <!---->
+      <ion-toolbar>
+        <ion-title
+          class="ion-text-center"
+        >
+          Añadir Alérgeno
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <div
+      class="ion-padding"
+    >
+      <ion-item>
+        <ion-searchbar
+          data-testid="allergens-searchbar"
+          placeholder="Busca un alérgeno"
+          value=""
+        />
+      </ion-item>
+      <ion-list />
+      <ion-button
+        class="ion-margin-top"
+        expand="block"
+      >
+        Añadir
+      </ion-button>
+      <ion-button
+        class="ion-margin-top"
+        color="medium"
+        expand="block"
+      >
+        Cancelar
+      </ion-button>
+    </div>
+    <template />
+  </ion-content>
+</DocumentFragment>
+`;

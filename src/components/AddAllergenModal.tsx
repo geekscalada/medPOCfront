@@ -80,6 +80,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
       <div className="ion-padding">
         <IonItem>
           <IonSearchbar
+            data-testid="allergens-searchbar"
             placeholder="Busca un alérgeno"
             onKeyUp={(e: any) => debounced(e.target.value)}
             value={searchTerm}

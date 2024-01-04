@@ -56,3 +56,6 @@ it("should return error when axios call fails", async () => {
   expect(result.current.data).toBeNull();
   expect(result.current.error).not.toBeNull();
 });
+
+//TODO: create a describe
+//TODO: explore all paths to test
