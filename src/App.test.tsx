@@ -1,8 +1,10 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import { render } from "@testing-library/react";
+import App from "./App";
 
-test('renders without crashing', () => {
+// Mocks adicionales aquí si son necesarios
+
+test("renders without crashing", () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
 });

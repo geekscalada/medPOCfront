@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 //TODO: check this sintax.
 const useModal = () => {
@@ -6,8 +6,6 @@ const useModal = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  
 
   return { isModalOpen, openModal, closeModal };
 };
