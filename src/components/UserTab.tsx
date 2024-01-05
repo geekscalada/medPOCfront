@@ -31,8 +31,6 @@ const UserTab: React.FC = () => {
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  //TODO: isolate URLS to global
-  //const apiUrl = import.meta.env.VITE_API_URL; // Asegúrate de que la URL sea correcta
   const { data, loading, error } = useAxiosRequests<UserDataDTO>({
     method: "GET",
     url: apiUrl,
