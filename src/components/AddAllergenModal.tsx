@@ -14,13 +14,15 @@ import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { AxiosRequestConfig } from "axios";
 import { ArrayAllergens } from "../models/types/types";
+import { Env } from "ionicons/dist/types/stencil-public-runtime";
 
 interface AddAllergenModalProps {
   closeModal: () => void;
 }
 
 const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
-  console.log("render AddAllergenModal");
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [searchTerm, setSearchTerm] = useState("");
   //TODO: change to string[]
   const [componentes, setComponentes] = useState<string[]>([]);
@@ -37,7 +39,7 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   // Isolate DATA to globals
   const optionsGet: AxiosRequestConfig = {
     method: "GET",
-    url: `http://192.168.33.22:3007/alergenos/${searchTerm}`,
+    url: apiUrl + "/alergenos/" + searchTerm,
     headers: { "Content-Type": "application/json" },
   };
 
