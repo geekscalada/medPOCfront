@@ -15,6 +15,12 @@ import { addCircle } from "ionicons/icons";
 
 import useModal from "../hooks/useModal";
 import AddAllergenModal from "./AddAllergenModal";
+import useAxiosRequests from "../services/useAxiosRequests";
+import { UserDataDTO } from "../models/types/types";
+
+const apiUrl = import.meta.env.VITE_API_URL;
+
+//TODO: use redux to manage user data for all the app
 
 const UserTab: React.FC = () => {
   // Estados para almacenar los datos del usuario
@@ -24,6 +30,14 @@ const UserTab: React.FC = () => {
   const [alergenos, setAlergenos] = useState<string[]>([]);
 
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  const { data, loading, error } = useAxiosRequests<UserDataDTO>({
+    method: "GET",
+    url: apiUrl,
+    headers: { "Content-Type": "application/json" },
+  });
+
+  //generate tyoe of data
 
   // La función que pasas a useEffect se ejecutará después de que el renderizado esté completo.
   // Esto asegura que no bloqueará la visualización de la interfaz de usuario, incluso si
@@ -39,23 +53,14 @@ const UserTab: React.FC = () => {
   // Después actualiza lo que ha de verse en el DOM, si algo ha cambiado, por ejemplo un mensaje
   // Después, ejecuta la función del efecto.
   useEffect(() => {
-    //TODO: isolate URLS to global
-    const apiUrl = "http://192.168.33.22:3007"; // Asegúrate de que la URL sea correcta
-
-    //TODO: isolate API calls to a service
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        const { data } = response;
-        setNombre(data.nombre);
-        setApellido(data.apellido);
-        setNombreDeUsuario(data.nombreDeUsuario);
-        setAlergenos(data.alergenos);
-      })
-      .catch((error) => {
-        console.error("Error al obtener datos del usuario:", error);
-      });
-  }, []);
+    if (data) {
+      console.log(data);
+      setNombre(data.nombre);
+      setApellido(data.apellido);
+      setNombreDeUsuario(data.nombreDeUsuario);
+      setAlergenos(data.alergenos);
+    }
+  }, [data]);
 
   return (
     <>
