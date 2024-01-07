@@ -4,13 +4,13 @@ import UserTab from "../components/UserTab";
 import ExploreContainer from "../components/ExploreContainer";
 import BarCode from "../components/BarCode";
 import SearchComponent from "../components/SearchComponent";
-
-// Importa otros componentes que necesites
-//TODO: mejorar esto.
+import GuardRoutes from "../routes/GuardRoutes";
+import LoginPage from "../pages/LoginPage";
 
 interface RouteConfig<T = any> {
   path: string;
   component: React.FC<T | any>;
+  isRequiredAuth?: boolean;
 }
 
 const inyectingComponents = {
@@ -18,6 +18,7 @@ const inyectingComponents = {
   BarCode,
   ExploreContainer,
   SearchComponent,
+  LoginPage,
 };
 
 export const mappingRoutes: {
@@ -25,22 +26,30 @@ export const mappingRoutes: {
     keyof typeof inyectingComponents
   >;
 } = {
+  LoginPage: {
+    path: "/login",
+    component: LoginPage,
+  },
   UserTab: {
     path: "/profile",
     component: UserTab, // Supongamos que UserTab es un React.FC sin props específicos
+    isRequiredAuth: true,
   },
   BarCode: {
     path: "/findcode",
     component: BarCode, // ExploreContainer es un React.FC<ContainerProps>
+    isRequiredAuth: true,
   },
   //TODO: remove this component only for learning purposes
   ExploreContainer: {
     path: "/explorecomponent",
     component: ExploreContainer, // ExploreContainer es un React.FC<ContainerProps>
+    isRequiredAuth: true,
   },
   SearchComponent: {
     path: "/search",
     component: SearchComponent, // ExploreContainer es un React.FC<ContainerProps>
+    isRequiredAuth: true,
   },
 };
 
@@ -58,11 +67,19 @@ const MainRoutes = (
       path="*"
       render={() => <Redirect to={mappingRoutes.BarCode.path} />}
     />
-
- {/* Key evita el warning de React sobre el uso del mismo valor como key en los hijos */}
-    {Object.entries(mappingRoutes).map(([key, route]) => (
-      <Route key={key} path={route.path} component={route.component} exact />
-    ))}
+    {/* Key evita el warning de React sobre el uso del mismo valor como key en los hijos */}
+    {/* Aquí usamos ProtectedRoute para las rutas que deben estar protegidas */}
+    {Object.entries(mappingRoutes).map(([key, route]) => {
+      const RouteComponent = route.isRequiredAuth ? GuardRoutes : Route;
+      return (
+        <RouteComponent
+          key={key}
+          path={route.path}
+          component={route.component}
+          exact
+        />
+      );
+    })}
   </>
 );
 

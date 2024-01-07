@@ -36,6 +36,9 @@ import MainRoutes from "./routes/MainRoutes";
 import { mappingRoutes } from "./routes/MainRoutes";
 import TabBar from "./components/TabBar";
 import TabBarComponent from "./components/TabBar";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "./hooks/AuthContext";
+
 
 setupIonicReact();
 
@@ -56,27 +59,31 @@ setupIonicReact();
 //TODO: when API calls fails, then don't show component?
 const App: React.FC = () => {
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          {/* IonRouterOutlet siempre envuelve las rutas
+    <GoogleOAuthProvider clientId="1097625209618-uikanbbdb42pc3h221vev6qpb6vdtr09.apps.googleusercontent.com">
+      <AuthProvider>
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            {/* IonRouterOutlet siempre envuelve las rutas
           gestiona la pila de navegación y las transiciones de manera eficiente, 
           permitiendo comportamientos como mantener 
           el estado de las páginas cuando navegas hacia adelante y hacia atrás          
           */}
-          <IonRouterOutlet>
-            {MainRoutes}
-            {/* Aquí puedes añadir más rutas secundarias */}
-          </IonRouterOutlet>
-          {/* TabBar es un componente que además sirve de entrypoint para el resto,
+            <IonRouterOutlet>
+              {MainRoutes}
+              {/* Aquí puedes añadir más rutas secundarias */}
+            </IonRouterOutlet>
+            {/* TabBar es un componente que además sirve de entrypoint para el resto,
           de pages 
           Podemos traernos la constante en vez de el componentes para evitar compatibilidades
           de hijo-padre
           */}
-          {TabBar}
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
+            {TabBar}
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 };
 
