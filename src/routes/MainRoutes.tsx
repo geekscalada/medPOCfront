@@ -70,6 +70,12 @@ const MainRoutes = (
     {/* Key evita el warning de React sobre el uso del mismo valor como key en los hijos */}
     {/* Aquí usamos ProtectedRoute para las rutas que deben estar protegidas */}
     {Object.entries(mappingRoutes).map(([key, route]) => {
+      /**
+       * RouteComponents será del tipo Route que es el componente de react-router-dom normal
+       * o bien del tipo GuardRoutes que es el componente que hemos creado para las rutas protegidas
+       * que lo que hace es devolver la ruta normal si el usuario está autenticado o bien
+       * redirigir a una ruta alternativa si no lo está
+       */
       const RouteComponent = route.isRequiredAuth ? GuardRoutes : Route;
       return (
         <RouteComponent

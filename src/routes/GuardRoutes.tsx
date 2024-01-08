@@ -6,6 +6,13 @@ interface ProtectedRouteProps extends RouteProps {
   component: React.FC<any>;
 }
 
+/**
+ * Renombrar a Component es importante porque por convención los componentes en React se escriben con mayúscula
+ * Y las etiquetas HTML con minúscula
+ * Así garantizamos que Component es un componente de React y no una etiqueta HTML
+ *
+ * Rest: hace referencia al resto de propiedades de RouteProps
+ */
 const GuardRoutes: React.FC<ProtectedRouteProps> = ({
   component: Component,
   ...rest
