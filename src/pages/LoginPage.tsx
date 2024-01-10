@@ -1,14 +1,10 @@
-import {
-  GoogleLogin,
-  useGoogleLogin,
-  useGoogleOAuth,
-} from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../hooks/AuthContext";
 import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { IonButton } from "@ionic/react";
 
-const LoginPage: React.FC = () => {
+import { ButtonConfig } from "../hooks/useIonModal";
+
+const LoginWithGoogleComponent = () => {
   const { setToken, token, removeToken } = useAuth();
   const history = useHistory();
 
@@ -16,7 +12,7 @@ const LoginPage: React.FC = () => {
   // backend will create a token and refresh token and send it to the frontend
 
   //TODO: TabBar shouldn't be visible in login page or maybe ir should be visible only some tabs
-  const login = useGoogleLogin({
+  const loginGoogleHandler = useGoogleLogin({
     onSuccess: (codeResponse) => {
       if (codeResponse) {
         setToken(codeResponse.code);
@@ -26,16 +22,20 @@ const LoginPage: React.FC = () => {
     flow: "auth-code",
   });
 
-  return (
-    console.log("Render"),
-    (
-      <>
-        <IonButton onClick={() => login()} color="primary" strong={true}>
-          Sign in with Google 🚀
-        </IonButton>
-      </>
-    )
-  );
+  const loginWithGoogleButton: ButtonConfig = {
+    text: "Sign in with Google 🚀",
+    onClick: () => loginGoogleHandler(),
+    strong: true,
+    disabled: false,
+    shape: "round",
+    onBlur: () => console.log("Botón perdió focus"),
+    onFocus: () => console.log("Botón obtuvo focusssss"),
+  };
+
+  return { loginWithGoogleButton };
 };
 
-export default LoginPage;
+export default LoginWithGoogleComponent;
+
+// Todo: maybe expose loginGoogleHandler to isolate ButtonConfig in another file
+// and pass handler as a prop to the button

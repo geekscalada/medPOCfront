@@ -1,0 +1,8 @@
+/* Media query para pantallas más grandes */
+
+@media (min-width: 768px) {
+  .mi-modal-personalizado {
+    --customwidth: 0px; /* Ancho fijo o puedes usar otra variable CSS */
+    --width: var(--customwidth);
+  }
+}

@@ -6,6 +6,7 @@ import BarCode from "../components/BarCode";
 import SearchComponent from "../components/SearchComponent";
 import GuardRoutes from "../routes/GuardRoutes";
 import LoginPage from "../pages/LoginPage";
+import Example from "../components/pruebaModal";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -19,6 +20,7 @@ const inyectingComponents = {
   ExploreContainer,
   SearchComponent,
   LoginPage,
+  Example,
 };
 
 export const mappingRoutes: {
@@ -28,10 +30,10 @@ export const mappingRoutes: {
 } = {
   LoginPage: {
     path: "/login",
-    component: LoginPage,
+    component: SearchComponent,
   },
   UserTab: {
-    path: "/profile",
+    path: "/profileAAA",
     component: UserTab, // Supongamos que UserTab es un React.FC sin props específicos
     isRequiredAuth: true,
   },
@@ -49,6 +51,11 @@ export const mappingRoutes: {
   SearchComponent: {
     path: "/search",
     component: SearchComponent, // ExploreContainer es un React.FC<ContainerProps>
+    isRequiredAuth: true,
+  },
+  Example: {
+    path: "/profile",
+    component: Example, // ExploreContainer es un React.FC<ContainerProps>
     isRequiredAuth: true,
   },
 };
