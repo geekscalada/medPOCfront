@@ -1,0 +1,11 @@
+/* Media query para pantallas más grandes */
+
+@media (min-width: 768px) {
+  .customModalIonic {
+    // Will be defined in the component
+    --customwidth: 0px;
+    --customheight: 0px;
+    --width: var(--customwidth);
+    --height: var(--customheight);
+  }
+}

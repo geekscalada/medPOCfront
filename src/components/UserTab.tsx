@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import {
   IonContent,
   IonLabel,
@@ -13,14 +13,14 @@ import {
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
 
-import useModal from "../hooks/useModal";
-import AddAllergenModal from "./AddAllergenModal";
+import AddAllergenComponentModal from "./AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
 import { UserDataDTO } from "../models/types/types";
+import useModalHelper from "../hooks/useModalHelper";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-//TODO: use redux to manage user data for all the app
+//TODO: maybe use redux to manage user data for all the app
 
 const UserTab: React.FC = () => {
   // Estados para almacenar los datos del usuario
@@ -29,7 +29,9 @@ const UserTab: React.FC = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
   const [alergenos, setAlergenos] = useState<string[]>([]);
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  // Pasaremos estas funciones como callbacks a los componentes hijos
+  // Nos apoyamos en el helper para no tener que declarar handlers en cada componente
+  const { isModalOpen, openModal, closeModal } = useModalHelper();
 
   const { data, loading, error } = useAxiosRequests<UserDataDTO>({
     method: "GET",
@@ -61,6 +63,14 @@ const UserTab: React.FC = () => {
       setAlergenos(data.alergenos);
     }
   }, [data]);
+
+  // const handleOpenAddAllergenModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const handleCloseAddAllergenModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <>
@@ -100,15 +110,10 @@ const UserTab: React.FC = () => {
               <IonLabel>{alergeno}</IonLabel>
             </IonItem>
           ))}
-          <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
-            {/* Aqui closeModal = es una prop, porque así la hemos definido como prop
-            y de hecho se ha definido (a través de la interfaz) que sea de tipo () => void, es decir, una función
-            que no recibe ningún argumento y no devuelve nada.
-            Así que esta prop recibe la funcion closeModal que es de ese tipo
-            y viene del hook useModal.          
-            */}
-            <AddAllergenModal closeModal={closeModal} />
-          </IonModal>
+          <AddAllergenComponentModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+          ></AddAllergenComponentModal>
         </IonList>
       </IonContent>
     </>

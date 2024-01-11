@@ -5,7 +5,8 @@ import ExploreContainer from "../components/ExploreContainer";
 import BarCode from "../components/BarCode";
 import SearchComponent from "../components/SearchComponent";
 import GuardRoutes from "../routes/GuardRoutes";
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../components/LoginWithGoogleComponent";
+import LoginPageModalComponent from "../components/LoginPageModalComponent";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -28,7 +29,7 @@ export const mappingRoutes: {
 } = {
   LoginPage: {
     path: "/login",
-    component: LoginPage,
+    component: LoginPageModalComponent,
   },
   UserTab: {
     path: "/profile",
@@ -48,7 +49,7 @@ export const mappingRoutes: {
   },
   SearchComponent: {
     path: "/search",
-    component: SearchComponent, // ExploreContainer es un React.FC<ContainerProps>
+    component: SearchComponent,
     isRequiredAuth: true,
   },
 };

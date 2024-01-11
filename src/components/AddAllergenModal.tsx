@@ -1,30 +1,26 @@
-import React, { useState, useEffect } from "react";
-import {
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonItem,
-  IonList,
-  IonButton,
-  IonSearchbar,
-} from "@ionic/react";
-
-import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
-import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
+import React, { useEffect, useState } from "react";
+import { IonButton, IonSearchbar, IonItem, IonList } from "@ionic/react";
+import { CustomModalComponent } from "../services/customModalComposer";
 import { AxiosRequestConfig } from "axios";
+import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { ArrayAllergens } from "../models/types/types";
-import { Env } from "ionicons/dist/types/stencil-public-runtime";
+import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
-interface AddAllergenModalProps {
-  closeModal: () => void;
+import { ModalComposer } from "../services/customModalComposer";
+import useModalHelper from "../hooks/useModalHelper";
+
+export interface AddAllergenComponentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-
+const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
-  //TODO: change to string[]
+  const { isModalOpen, openModal, closeModal } = useModalHelper();
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [componentes, setComponentes] = useState<string[]>([]);
 
   /**
@@ -36,7 +32,6 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
     setIsConfirmationModalOpen(false);
   };
 
-  // Isolate DATA to globals
   const optionsGet: AxiosRequestConfig = {
     method: "GET",
     url: apiUrl + "/alergenos/" + searchTerm,
@@ -51,6 +46,14 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
   );
 
   useEffect(() => {
+    if (isOpen) {
+      openModal();
+    } else {
+      closeModal();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     // We refresh data when hook of useApiDebouncedRequest changes
     // TODO: Implement toasts of errors
     if (error) {
@@ -61,62 +64,63 @@ const AddAllergenModal: React.FC<AddAllergenModalProps> = ({ closeModal }) => {
     setComponentes(data?.allergens ?? []);
   }, [data, error]);
 
-  return (
-    <IonContent>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle className="ion-text-center">Añadir Alérgeno</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <div className="ion-padding">
-        <IonItem>
-          <IonSearchbar
-            debounce={500}
-            data-testid="allergens-searchbar"
-            placeholder="Busca un alérgeno"
-            onIonInput={(e) => setSearchTerm(e.detail.value!)}
-            value={searchTerm}
-            onIonClear={() => setSearchTerm("")}
-          ></IonSearchbar>
-        </IonItem>
-        <IonList>
-          {componentes.map((componente) => (
-            <IonItem
-              key={componente + "id"}
-              button
-              onClick={() => {
-                setSelectedAllergen(componente);
-                setIsConfirmationModalOpen(true);
-              }}
-            >
-              {componente} {/* Ajusta según la estructura de tus datos */}
-            </IonItem>
-          ))}
-        </IonList>
-        <IonButton
-          expand="block"
-          onClick={closeModal}
-          className="ion-margin-top"
-        >
-          Añadir
-        </IonButton>
-        <IonButton
-          expand="block"
-          color="medium"
-          onClick={closeModal}
-          className="ion-margin-top"
-        >
-          Cancelar
-        </IonButton>
-      </div>
+  const modalComposer: ModalComposer = {
+    titleModal: "Añadir alérgeno",
+    headerModal: null,
+    content: (
+      <>
+        <div className="ion-padding">
+          <IonItem>
+            <IonSearchbar
+              color={"medium"}
+              debounce={500}
+              data-testid="allergens-searchbar"
+              placeholder="Search"
+              onIonInput={(e) => setSearchTerm(e.detail.value!)}
+              value={searchTerm}
+              onIonClear={() => setSearchTerm("")}
+            ></IonSearchbar>
+          </IonItem>
+          <IonList>
+            {componentes.map((componente) => (
+              <IonItem
+                key={componente + "id"}
+                button
+                onClick={() => {
+                  setSelectedAllergen(componente);
+                  setIsConfirmationModalOpen(true);
+                }}
+              >
+                {componente} {/* Ajusta según la estructura de tus datos */}
+              </IonItem>
+            ))}
+          </IonList>
+        </div>
+      </>
+    ),
+    buttons: [],
+    modalSize: {
+      width: "550px",
+      height: "650px",
+    },
+    canDismissModal: true,
+    closeButtonHeader: true,
+  };
 
+  return (
+    <>
+      <CustomModalComponent
+        modalComposer={modalComposer}
+        isOpen={isModalOpen}
+        onClose={onClose} // Callback
+      />
       <ConfirmationAllergenSheeAction
         isOpen={isConfirmationModalOpen}
         allergen={selectedAllergen}
         onClose={closeConfirmationModal}
       />
-    </IonContent>
+    </>
   );
 };
 
-export default AddAllergenModal;
+export default AddAllergenComponentModal;

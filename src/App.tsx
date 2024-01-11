@@ -39,6 +39,8 @@ import TabBarComponent from "./components/TabBar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./hooks/AuthContext";
 
+import "./styles/customIonModal.scss";
+
 setupIonicReact();
 
 //TODO: check if login works well in mobile
