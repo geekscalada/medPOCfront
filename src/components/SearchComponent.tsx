@@ -1,10 +1,10 @@
 import React from "react";
 import useIonModal, {
   ButtonConfig,
-  ButtonContainerStyle,
   FlexStyle,
+  ModalComposer,
+  ModalSize,
 } from "../hooks/useIonModal";
-import LoginPage from "../pages/LoginPage";
 import LoginWithGoogleComponent from "../pages/LoginPage";
 import {
   IonButton,
@@ -13,22 +13,12 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonText,
 } from "@ionic/react";
 
 const SearchComponent: React.FC = () => {
   const { CustomIonModal, openModal } = useIonModal();
-
   const { loginWithGoogleButton } = LoginWithGoogleComponent();
-
-  // const buttonOpen: ButtonConfig = {
-  //   text: "Sign in with Google 🚀",
-  //   onClick: () => login(),
-  //   strong: true,
-  //   disabled: false,
-  //   shape: "round",
-  //   onBlur: () => console.log("Botón perdió focus"),
-  //   onFocus: () => console.log("Botón obtuvo focusssss"),
-  // };
 
   const buttonClose: ButtonConfig = {
     text: "Cerrar",
@@ -40,34 +30,37 @@ const SearchComponent: React.FC = () => {
     color: "secondary",
   };
 
-  const ButtonContainerStyle: FlexStyle = {
-    flexDirection: "column",
-    justifyContent: "center",
+  const buttonClose3: ButtonConfig = {
+    text: "Cerrar",
+    onClick: () => console.log("Modal cerrado"),
+    strong: true,
+    disabled: false,
+    onBlur: () => console.log("Botón perdió focus"),
+    onFocus: () => console.log("Botón obtuvo focus"),
+    color: "secondary",
+  };
+
+  const modalComposer: ModalComposer = {
+    titleModal: "TitleModal",
+    headerModal: (
+      <IonText color="primary">
+        <h1>H1: Prueba</h1>
+      </IonText>
+    ),
+    content: "TextModal",
+    buttons: [loginWithGoogleButton, buttonClose, buttonClose3],
+    containerButtonStyle: {
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+    modalSize: {
+      width: "500px",
+      height: "700px",
+    },
   };
 
   const handleOpenModal = () => {
-    openModal(
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum
-        quidem recusandae ducimus quos reprehenderit. Veniam, molestias quos,
-        dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
-        dicta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-        illum quidem recusandae ducimus quos reprehenderit. Veniam, molestias
-        quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
-        Eaque, dicta. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Magni illum quidem recusandae ducimus quos reprehenderit. Veniam,
-        molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum
-        qui. Eaque, dicta.
-      </p>,
-      [
-        loginWithGoogleButton,
-        buttonClose,
-
-        // más botones según sea necesario
-      ],
-      ButtonContainerStyle,
-      "600px"
-    );
+    openModal(modalComposer);
   };
 
   return (
@@ -89,4 +82,4 @@ const SearchComponent: React.FC = () => {
 
 export default SearchComponent;
 
-// TODO: rename as a modalLoginComponent
+// TODO: remove this component because it is a proof of concept

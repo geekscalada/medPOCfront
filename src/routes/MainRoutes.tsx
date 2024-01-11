@@ -7,6 +7,7 @@ import SearchComponent from "../components/SearchComponent";
 import GuardRoutes from "../routes/GuardRoutes";
 import LoginPage from "../pages/LoginPage";
 import Example from "../components/pruebaModal";
+import LoginPageModalComponent from "../components/LoginPageModal";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -30,10 +31,10 @@ export const mappingRoutes: {
 } = {
   LoginPage: {
     path: "/login",
-    component: SearchComponent,
+    component: LoginPageModalComponent,
   },
   UserTab: {
-    path: "/profileAAA",
+    path: "/profile",
     component: UserTab, // Supongamos que UserTab es un React.FC sin props específicos
     isRequiredAuth: true,
   },
@@ -50,12 +51,12 @@ export const mappingRoutes: {
   },
   SearchComponent: {
     path: "/search",
-    component: SearchComponent, // ExploreContainer es un React.FC<ContainerProps>
+    component: SearchComponent,
     isRequiredAuth: true,
   },
   Example: {
-    path: "/profile",
-    component: Example, // ExploreContainer es un React.FC<ContainerProps>
+    path: "/example",
+    component: Example,
     isRequiredAuth: true,
   },
 };

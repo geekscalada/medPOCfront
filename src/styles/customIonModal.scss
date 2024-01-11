@@ -1,8 +1,11 @@
 /* Media query para pantallas más grandes */
 
 @media (min-width: 768px) {
-  .mi-modal-personalizado {
-    --customwidth: 0px; /* Ancho fijo o puedes usar otra variable CSS */
+  .customModalIonic {
+    // Will be defined in the component
+    --customwidth: 0px;
+    --customheight: 0px;
     --width: var(--customwidth);
+    --height: var(--customheight);
   }
 }

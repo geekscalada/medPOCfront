@@ -1,4 +1,4 @@
-import { useState, ReactNode, useRef } from "react";
+import React, { useState, ReactNode, useRef } from "react";
 import {
   IonModal,
   IonButton,
@@ -26,55 +26,70 @@ export interface ButtonConfig {
   type?: "submit" | "reset" | "button";
   download?: string;
   target?: "_self" | "_blank" | "_parent" | "_top";
-
-  // Eventos
-  onClick?: (event: React.MouseEvent) => void; // Manejador para clicks
-  onFocus?: (event: React.FocusEvent) => void; // Manejador para cuando el botón obtiene focus
-  onBlur?: (event: React.FocusEvent) => void; // Manejador para cuando el botón pierde focus
-  // ... cualquier otro evento que necesites
-
-  text: string; // Texto del botón, una propiedad personalizada que no está en la API de Ionic
+  onClick?: (event: React.MouseEvent) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
+  text: string; // propiedad personalizada que no está en la API de Ionic
 }
 
-export interface FlexStyle {
+export type FlexStyle = {
   flexDirection: "column" | "row";
   justifyContent?: "center" | "flex-start" | "flex-end" | "space-between";
-}
+};
 
-export interface ButtonContainerStyle extends FlexStyle {
+type ButtonContainerStyle = FlexStyle & {
   display: string;
   gap: string;
   flex: string;
-}
+};
 
-const useIonModal = () => {
+export type ModalSize = {
+  width: string;
+  height: string;
+};
+
+export type ModalComposer = {
+  titleModal: string;
+  headerModal?: React.ReactNode;
+  content?: React.ReactNode;
+  buttons?: ButtonConfig[];
+  containerButtonStyle: FlexStyle;
+  modalSize: ModalSize;
+  canDismissModal?: boolean;
+  closeButtonHeader?: boolean;
+};
+
+const useIonCustomModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [buttonsConfig, setButtonsConfig] = useState<ButtonConfig[]>([]);
+  const [headerModal, setHeaderModal] = useState<React.ReactNode>("");
   const [containerButtonStyle, setContainerButtonStyle] =
     useState<ButtonContainerStyle>();
-  const [modalWidth, setModalWidth] = useState<any>();
+  const [modalSize, setModalSize] = useState<ModalSize>();
+  const [titleModal, setTitleModal] = useState<string>("");
+  const [canDismissModal, setCanDismissModal] = useState<boolean>(false);
+  const [closeButtonHeader, setCloseButtonHeader] = useState<boolean>(false);
 
-  const modalRef = useRef(null);
+  // const modalRef = useRef(null);
 
-  const openModal = (
-    content: ReactNode,
-    buttons: ButtonConfig[],
-    containerButtonStyle: FlexStyle,
-    modalWidth: any
-  ) => {
+  const openModal = (modalComposer: ModalComposer) => {
     const buttonContainerStyle: ButtonContainerStyle = {
       display: "flex",
-      flexDirection: containerButtonStyle.flexDirection,
+      flexDirection: modalComposer.containerButtonStyle.flexDirection,
       gap: "3px",
       flex: "0.5",
-      justifyContent: containerButtonStyle.justifyContent,
+      justifyContent: modalComposer.containerButtonStyle.justifyContent,
     };
 
     setContainerButtonStyle(buttonContainerStyle);
-    setModalContent(content);
-    setButtonsConfig(buttons);
-    setModalWidth(modalWidth);
+    setTitleModal(modalComposer.titleModal);
+    setHeaderModal(modalComposer.headerModal);
+    setModalContent(modalComposer.content);
+    setButtonsConfig(modalComposer.buttons ?? []);
+    setModalSize(modalComposer.modalSize);
+    setCanDismissModal(canDismissModal);
+    setCloseButtonHeader(modalComposer.closeButtonHeader ?? true);
     setIsOpen(true);
   };
 
@@ -93,65 +108,38 @@ const useIonModal = () => {
       </IonButton>
     ));
 
-  const CustomIonModal: React.FC = (modalStyle) => (
-    console.log("modalStyleComponent!!!", modalStyle),
-    (
-      <IonModal
-        isOpen={isOpen}
-        className="mi-modal-personalizado"
-        style={{ "--customwidth": modalWidth }}
-      >
-        <IonContent>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Modal</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            {modalContent}
-            {renderButtons()}
-          </IonContent>
-        </IonContent>
-      </IonModal>
-    )
+  const CustomIonModal: React.FC = () => (
+    <IonModal
+      isOpen={isOpen}
+      className="customModalIonic"
+      style={{
+        "--customwidth": modalSize?.width,
+        "--customheight": modalSize?.height,
+      }}
+      canDismiss={canDismissModal}
+    >
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>{titleModal}</IonTitle>
+          {closeButtonHeader && (
+            <IonButtons slot="end">
+              <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+            </IonButtons>
+          )}
+          {/* <IonButtons slot="end">
+            <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+          </IonButtons> */}
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        {headerModal}
+        <p>{modalContent}</p>
+        <div style={containerButtonStyle}>{renderButtons()}</div>
+      </IonContent>
+    </IonModal>
   );
 
   return { CustomIonModal, openModal, closeModal };
 };
 
-export default useIonModal;
-
-//  return (
-//   <IonPage>
-//   <IonHeader>
-//     <IonToolbar>
-//       <IonTitle>Inline Modal</IonTitle>
-//     </IonToolbar>
-//   </IonHeader>
-//   <IonContent className="ion-padding">
-//     <IonButton expand="block" onClick={() => setIsOpen(true)}>
-//       Open
-//     </IonButton>
-
-//   </IonContent>
-// </IonPage>
-
-// <IonModal
-//       isOpen={isOpen}
-//       onDidDismiss={closeModal}
-
-//     >
-
-//         <div className="customIonModal">
-//           <div className="container-content" style={{ display: "flex" }}>
-//             {modalContent}
-//           </div>
-//           <div className="container-buttons" style={containerButtonStyle}>
-//             {renderButtons()}
-//           </div>
-//         </div>
-
-//     </IonModal>
+export default useIonCustomModal;

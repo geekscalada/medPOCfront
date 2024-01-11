@@ -8,7 +8,7 @@ const TabBar = (
   <IonTabBar slot="bottom">
     {/* tab es usado para referenciarlo en otras partes del código
           también por react para el manejo del estado y otras cosas */}
-    <IonTabButton tab="perfil" href={mappingRoutes.Example.path}>
+    <IonTabButton tab="perfil" href={mappingRoutes.UserTab.path}>
       <IonIcon icon={personCircleSharp} size="large" />
       {/* <IonLabel>Perfil</IonLabel> */}
     </IonTabButton>
