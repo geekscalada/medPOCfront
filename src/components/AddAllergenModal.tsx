@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { IonButton, IonSearchbar, IonItem, IonList } from "@ionic/react";
-import { ButtonConfig, CustomComponent } from "../hooks/useModal2";
+import { CustomModalComponent } from "../services/customModalComposer";
 import { AxiosRequestConfig } from "axios";
 import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { ArrayAllergens } from "../models/types/types";
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
-import { ModalComposer } from "../hooks/useModal2";
+import { ModalComposer } from "../services/customModalComposer";
 import useModalHelper from "../hooks/useModalHelper";
 
 export interface AddAllergenComponentModalProps {
@@ -109,7 +109,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
 
   return (
     <>
-      <CustomComponent
+      <CustomModalComponent
         modalComposer={modalComposer}
         isOpen={isModalOpen}
         onClose={onClose} // Callback

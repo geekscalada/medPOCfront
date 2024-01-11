@@ -2,7 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../hooks/AuthContext";
 import { useHistory } from "react-router-dom";
 
-import { ButtonConfig } from "../hooks/useIonModal";
+import { ButtonConfig } from "../services/customModalComposer";
 
 const LoginWithGoogleComponent = () => {
   const { setToken, token, removeToken } = useAuth();
@@ -11,6 +11,7 @@ const LoginWithGoogleComponent = () => {
   //TODO: We need to use auth-code flow to get the code and send it to the backend
   // backend will create a token and refresh token and send it to the frontend
 
+  //TODO: fix because when onSucces, modal is not closing, just redirecting, we need a callback
   //TODO: TabBar shouldn't be visible in login page or maybe ir should be visible only some tabs
   const loginGoogleHandler = useGoogleLogin({
     onSuccess: (codeResponse) => {

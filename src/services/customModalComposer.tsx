@@ -62,13 +62,16 @@ export type ModalComposer = {
 export interface CustomIonModalProps {
   modalComposer: ModalComposer;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  onCallBack?: () => void;
 }
 
-export const CustomComponent: React.FC<CustomIonModalProps> = ({
+export const CustomModalComponent: React.FC<CustomIonModalProps> = ({
   modalComposer,
   isOpen,
   onClose,
+  //TODO: implementar onCallBack
+  onCallBack,
 }) => {
   const [isModalOpen, setIsOpen] = useState<boolean>(isOpen);
 
@@ -97,10 +100,12 @@ export const CustomComponent: React.FC<CustomIonModalProps> = ({
 
   const closeModal = () => {
     setIsOpen(false);
-    onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
-  const CustomIonicModal = (
+  const modal = (
     <IonModal
       isOpen={isModalOpen}
       className="customModalIonic"
@@ -129,5 +134,5 @@ export const CustomComponent: React.FC<CustomIonModalProps> = ({
     </IonModal>
   );
 
-  return CustomIonicModal;
+  return modal;
 };

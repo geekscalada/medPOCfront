@@ -5,10 +5,8 @@ import ExploreContainer from "../components/ExploreContainer";
 import BarCode from "../components/BarCode";
 import SearchComponent from "../components/SearchComponent";
 import GuardRoutes from "../routes/GuardRoutes";
-import LoginPage from "../pages/LoginPage";
-import Example from "../components/pruebaModal";
+import LoginPage from "../components/LoginWithGoogleComponent";
 import LoginPageModalComponent from "../components/LoginPageModalComponent";
-import AddAllergenComponentModal from "../components/AddAllergenModal";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -22,7 +20,6 @@ const inyectingComponents = {
   ExploreContainer,
   SearchComponent,
   LoginPage,
-  Example,
 };
 
 export const mappingRoutes: {
@@ -53,11 +50,6 @@ export const mappingRoutes: {
   SearchComponent: {
     path: "/search",
     component: SearchComponent,
-    isRequiredAuth: true,
-  },
-  Example: {
-    path: "/example",
-    component: Example,
     isRequiredAuth: true,
   },
 };
