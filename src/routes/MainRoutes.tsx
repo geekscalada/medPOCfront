@@ -7,7 +7,8 @@ import SearchComponent from "../components/SearchComponent";
 import GuardRoutes from "../routes/GuardRoutes";
 import LoginPage from "../pages/LoginPage";
 import Example from "../components/pruebaModal";
-import LoginPageModalComponent from "../components/LoginPageModal";
+import LoginPageModalComponent from "../components/LoginPageModalComponent";
+import AddAllergenComponentModal from "../components/AddAllergenModal";
 
 interface RouteConfig<T = any> {
   path: string;
