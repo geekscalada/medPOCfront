@@ -4,13 +4,10 @@ import { CustomComponent, ModalComposer } from "../hooks/useModal2";
 
 import LoginWithGoogleComponent from "../pages/LoginPage";
 import { IonText } from "@ionic/react";
+import useModalHelper from "../hooks/useModalHelper";
 
 const LoginPageModalComponent: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
+  const { isModalOpen, openModal, closeModal } = useModalHelper();
 
   const { loginWithGoogleButton } = LoginWithGoogleComponent();
 
@@ -39,7 +36,7 @@ const LoginPageModalComponent: React.FC = () => {
     <CustomComponent
       modalComposer={modalComposer}
       isOpen={true}
-      onClose={handleModalClose} // Callback
+      onClose={closeModal} // Callback
     />
   );
 };

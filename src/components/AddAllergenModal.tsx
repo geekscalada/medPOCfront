@@ -7,6 +7,7 @@ import { ArrayAllergens } from "../models/types/types";
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
 import { ModalComposer } from "../hooks/useModal2";
+import useModalHelper from "../hooks/useModalHelper";
 
 export interface AddAllergenComponentModalProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
   onClose,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(isOpen);
+  const { isModalOpen, openModal, closeModal } = useModalHelper();
   const apiUrl = import.meta.env.VITE_API_URL;
   const [componentes, setComponentes] = useState<string[]>([]);
 
@@ -45,7 +46,11 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
   );
 
   useEffect(() => {
-    setIsModalOpen(isOpen);
+    if (isOpen) {
+      openModal();
+    } else {
+      closeModal();
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -58,10 +63,6 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
 
     setComponentes(data?.allergens ?? []);
   }, [data, error]);
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
 
   const modalComposer: ModalComposer = {
     titleModal: "Añadir alérgeno",

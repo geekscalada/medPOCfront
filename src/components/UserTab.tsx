@@ -13,10 +13,10 @@ import {
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
 
-import useModal from "../hooks/useModal";
 import AddAllergenComponentModal from "./AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
 import { UserDataDTO } from "../models/types/types";
+import useModalHelper from "../hooks/useModalHelper";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -29,9 +29,9 @@ const UserTab: React.FC = () => {
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
   const [alergenos, setAlergenos] = useState<string[]>([]);
 
-  // const { isModalOpen, openModal, closeModal } = useModal();
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // Pasaremos estas funciones como callbacks a los componentes hijos
+  // Nos apoyamos en el helper para no tener que declarar handlers en cada componente
+  const { isModalOpen, openModal, closeModal } = useModalHelper();
 
   const { data, loading, error } = useAxiosRequests<UserDataDTO>({
     method: "GET",
@@ -64,13 +64,13 @@ const UserTab: React.FC = () => {
     }
   }, [data]);
 
-  const handleOpenAddAllergenModal = () => {
-    setIsModalOpen(true);
-  };
+  // const handleOpenAddAllergenModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const handleCloseAddAllergenModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCloseAddAllergenModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <>
@@ -100,7 +100,7 @@ const UserTab: React.FC = () => {
               aria-hidden="true"
               icon={addCircle}
               slot="end"
-              onClick={handleOpenAddAllergenModal}
+              onClick={openModal}
               color="primary"
             ></IonIcon>
           </IonItem>
@@ -112,7 +112,7 @@ const UserTab: React.FC = () => {
           ))}
           <AddAllergenComponentModal
             isOpen={isModalOpen}
-            onClose={handleCloseAddAllergenModal}
+            onClose={closeModal}
           ></AddAllergenComponentModal>
         </IonList>
       </IonContent>
