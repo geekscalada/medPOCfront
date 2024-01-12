@@ -29,6 +29,7 @@ export interface ButtonConfig {
   onClick?: (event: React.MouseEvent) => void;
   onFocus?: (event: React.FocusEvent) => void;
   onBlur?: (event: React.FocusEvent) => void;
+  callBackButtonCustomFunction?: () => void;
   text: string; // propiedad personalizada que no está en la API de Ionic
 }
 
@@ -55,7 +56,7 @@ export type ModalComposer = {
   buttons?: ButtonConfig[];
   containerButtonStyle?: FlexStyle;
   modalSize: ModalSize;
-  canDismissModal?: boolean;
+  canDismissModal?: any;
   closeButtonHeader?: boolean;
 };
 
@@ -63,7 +64,7 @@ export interface CustomIonModalProps {
   modalComposer: ModalComposer;
   isOpen: boolean;
   onClose?: () => void;
-  onCallBack?: () => void;
+  onCallBackModalCustomFunction?: () => void;
 }
 
 export const CustomModalComponent: React.FC<CustomIonModalProps> = ({
@@ -71,7 +72,7 @@ export const CustomModalComponent: React.FC<CustomIonModalProps> = ({
   isOpen,
   onClose,
   //TODO: implementar onCallBack
-  onCallBack,
+  onCallBackModalCustomFunction,
 }) => {
   const [isModalOpen, setIsOpen] = useState<boolean>(isOpen);
 

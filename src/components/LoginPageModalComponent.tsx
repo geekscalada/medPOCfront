@@ -8,14 +8,21 @@ import {
 import LoginWithGoogleComponent from "./LoginWithGoogleComponent";
 import { IonText } from "@ionic/react";
 import useModalHelper from "../hooks/useModalHelper";
-import { infinite } from "ionicons/icons";
 
 const LoginPageModalComponent: React.FC = () => {
   const { isModalOpen, openModal, closeModal } = useModalHelper({
     initialState: true,
   });
 
-  const { loginWithGoogleButton } = LoginWithGoogleComponent();
+  const [canDismiss, setCanDismiss] = useState<boolean>(false);
+
+  const closeModalCallback = () => {
+    setCanDismiss(true);
+    closeModal();
+  };
+
+  const { loginWithGoogleButton } =
+    LoginWithGoogleComponent(closeModalCallback);
 
   const modalComposer: ModalComposer = {
     titleModal: "Login",
@@ -34,7 +41,7 @@ const LoginPageModalComponent: React.FC = () => {
       width: "400px",
       height: "200px",
     },
-    canDismissModal: false,
+    canDismissModal: canDismiss,
     closeButtonHeader: false,
   };
 
