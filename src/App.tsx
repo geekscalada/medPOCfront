@@ -45,23 +45,22 @@ setupIonicReact();
 
 //TODO: check if login works well in mobile
 
-// TODO: insert searchBar component
+// TODO: header ionic with options, and logout with https://ionicframework.com/docs/api/menu
+// and header should change depending on the page
 
-// TODO: header ionic with options, and logout
+// TODO: management of errors with custom exceptions (new error), handLeError (with axios)  and then show toatss
+// toast with the message. Maybe not custom exceptions, but just a new error with the message because
+// it will be better do that in the backend
 
-// TODO: management of errors
+// TODO: use react-redux with this approx???? to show dark mode?
+// https://www.youtube.com/watch?v=fMiFnbufAP4&t=124s&ab_channel=CarlosAzaustre-AprendeJavaScript
 
-// todo: why this sintax? all document
 
-// todo: use render like in the ionic documentation example?
-
-// todo: check all scafolding
-
-// TODO: change views for web
+// TODO: change views for web design
 
 // TODO: height should be fixed to show all the content
 
-// TODO: when api is down, then profile page is re-rendering and doing calls in a bucle
+// TODO: when api is down, then profile page is re-rendering and doing calls in a bucle?
 
 //TODO: when API calls fails, then don't show component?
 const App: React.FC = () => {
