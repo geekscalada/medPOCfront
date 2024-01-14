@@ -1,12 +1,6 @@
 import React, { createContext, useContext } from "react";
 import useAuthToken from "./useAuthToken";
 
-//TODO: next steps
-// Next step: crear isLogged based on useAuthToken
-// next step: revisar como consumir authContext
-// next step: revisar como cambiar componentes según login or not
-// next step: revisar como proteger rutas según login or not.
-
 interface AuthContextType {
   token: string | null;
   setToken: (token: string) => void;
