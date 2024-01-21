@@ -32,6 +32,7 @@ const LoginWithGoogleComponent = (
       }
     },
     flow: "auth-code",
+    //ux_mode: "redirect",
   });
 
   return { loginWithGoogleButton };
