@@ -1,7 +1,8 @@
 import { useAuth } from "../hooks/AuthContext";
 
-const BarCode: React.FC = () => {
-  const { setToken, token, removeToken } = useAuth();
+const BarCode: React.FC = () => {  const { auth, global } = useAuth();
+
+  const { token, setToken, removeToken } = auth;
 
   return (
     <>

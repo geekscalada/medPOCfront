@@ -6,7 +6,6 @@ import {
   IonHeader,
   IonIcon,
   IonLabel,
-  IonMenu,
   IonMenuButton,
   IonPage,
   IonRouterOutlet,
@@ -38,15 +37,16 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
+import UserTab from "./components/UserTab";
+import { personCircle } from "ionicons/icons";
 import MainRoutes from "./routes/MainRoutes";
-
+import { mappingRoutes } from "./routes/MainRoutes";
 import TabBar from "./components/TabBar";
-
+import TabBarComponent from "./components/TabBar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { AuthProvider } from "./hooks/AuthContext";
+import { AuthProvider, useAuth } from "./hooks/AuthContext";
 
 import "./styles/customIonModal.scss";
-import "./components/IonicHeaderComponent";
 import IonicHeaderComponent from "./components/IonicHeaderComponent";
 
 setupIonicReact();
@@ -74,52 +74,52 @@ const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="1097625209618-uikanbbdb42pc3h221vev6qpb6vdtr09.apps.googleusercontent.com">
       <AuthProvider>
-        <IonApp>
-          <IonReactRouter>
-            <IonMenu contentId="main-content">
-              <IonHeader>
-                <IonToolbar>
-                  <IonTitle>Menu Content</IonTitle>
-                </IonToolbar>
-              </IonHeader>
-              <IonContent className="ion-padding">
-                This is the menu content.
-              </IonContent>
-            </IonMenu>
-            <IonPage id="main-content">
-              <IonHeader>
-                <IonToolbar>
-                  <IonButtons slot="start">
-                    <IonMenuButton></IonMenuButton>
-                  </IonButtons>
-                  <IonTitle>Menu</IonTitle>
-                </IonToolbar>
-              </IonHeader>
-              <IonContent className="ion-padding">
-                <IonTabs>
-                  {/* IonRouterOutlet siempre envuelve las rutas
-          gestiona la pila de navegación y las transiciones de manera eficiente, 
-          permitiendo comportamientos como mantener 
-          el estado de las páginas cuando navegas hacia adelante y hacia atrás          
-          */}
-                  <IonRouterOutlet>
-                    {MainRoutes}
-                    {/* Aquí puedes añadir más rutas secundarias */}
-                  </IonRouterOutlet>
-                  {/* TabBar es un componente que además sirve de entrypoint para el resto,
-          de pages 
-          Podemos traernos la constante en vez de el componentes para evitar compatibilidades
-          de hijo-padre
-          */}
-                  {TabBar}
-                </IonTabs>
-              </IonContent>
-            </IonPage>
-          </IonReactRouter>
-        </IonApp>
+        <MainContent />
       </AuthProvider>
     </GoogleOAuthProvider>
   );
 };
 
 export default App;
+
+const MainContent: React.FC = () => {
+  const { global } = useAuth();
+  const { headerTitle } = global;
+
+  return (
+    <IonApp>
+      <IonicHeaderComponent />
+      <IonReactRouter>
+        <IonPage id="main-content">
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton></IonMenuButton>
+              </IonButtons>
+              <IonTitle>{headerTitle}</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            <IonTabs>
+              {/* IonRouterOutlet siempre envuelve las rutas
+    gestiona la pila de navegación y las transiciones de manera eficiente, 
+    permitiendo comportamientos como mantener 
+    el estado de las páginas cuando navegas hacia adelante y hacia atrás          
+    */}
+              <IonRouterOutlet>
+                {MainRoutes}
+                {/* Aquí puedes añadir más rutas secundarias */}
+              </IonRouterOutlet>
+              {/* TabBar es un componente que además sirve de entrypoint para el resto,
+    de pages 
+    Podemos traernos la constante en vez de el componentes para evitar compatibilidades
+    de hijo-padre
+    */}
+              {TabBar}
+            </IonTabs>
+          </IonContent>
+        </IonPage>
+      </IonReactRouter>
+    </IonApp>
+  );
+};

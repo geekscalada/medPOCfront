@@ -7,7 +7,8 @@ import { ButtonConfig } from "../services/customModalComposer";
 const LoginWithGoogleComponent = (
   onLoginSuccessCallbackToModal: () => void
 ) => {
-  const { setToken, token, removeToken } = useAuth();
+  const { auth, global } = useAuth();
+  const { token, setToken, removeToken } = auth;
   const history = useHistory();
 
   //TODO: We need to use auth-code flow to get the code and send it to the backend
