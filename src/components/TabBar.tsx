@@ -8,15 +8,15 @@ const TabBar = (
   <IonTabBar slot="bottom">
     {/* tab es usado para referenciarlo en otras partes del código
           también por react para el manejo del estado y otras cosas */}
-    <IonTabButton tab="perfil" href={mappingRoutes.UserTab.path}>
+    <IonTabButton tab="perfil" href={mappingRoutes.profile.path}>
       <IonIcon icon={personCircleSharp} size="large" />
       {/* <IonLabel>Perfil</IonLabel> */}
     </IonTabButton>
-    <IonTabButton tab="barcode" href={mappingRoutes.BarCode.path}>
+    <IonTabButton tab="barcode" href={mappingRoutes.barcode.path}>
       <IonIcon icon={barcodeSharp} size="large" />
       {/* <IonLabel>Perfil</IonLabel> */}
     </IonTabButton>
-    <IonTabButton tab="search" href={mappingRoutes.SearchComponent.path}>
+    <IonTabButton tab="search" href={mappingRoutes.explorecomponent.path}>
       <IonIcon icon={searchSharp} size="large" />
       {/* <IonLabel>Perfil</IonLabel> */}
     </IonTabButton>

@@ -10,10 +10,12 @@ import {
   IonTitle,
   IonIcon,
   IonModal,
+  IonButtons,
+  IonMenuButton,
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
 
-import AddAllergenComponentModal from "./AddAllergenModal";
+import AddAllergenComponentModal from "../components/AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
 import { UserDataDTO } from "../models/types/types";
 import useModalHelper from "../hooks/useModalHelper";
@@ -70,52 +72,53 @@ const UserTab: React.FC = () => {
 
   // const handleCloseAddAllergenModal = () => {
   //   setIsModalOpen(false);
-  // };
+  // };s
 
   return (
     <>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Perfil del Usuario</IonTitle>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>User profile</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <IonList>
-          <IonItem>
-            <IonLabel>Nombre: {nombre}</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Apellido: {apellido}</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Nombre de Usuario: {nombreDeUsuario}</IonLabel>
-          </IonItem>
-        </IonList>
-        <IonList>
-          <IonItem>
-            <IonLabel>
-              <h1>Alérgenos</h1>
-            </IonLabel>
-            <IonIcon
-              aria-hidden="true"
-              icon={addCircle}
-              slot="end"
-              onClick={openModal}
-              color="primary"
-            ></IonIcon>
-          </IonItem>
+      <IonList>
+        <IonItem>
+          <IonLabel>Nombre: {nombre}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>Apellido: {apellido}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>Nombre de Usuario: {nombreDeUsuario}</IonLabel>
+        </IonItem>
+      </IonList>
+      <IonList>
+        <IonItem>
+          <IonLabel>
+            <h1>Alérgenos</h1>
+          </IonLabel>
+          <IonIcon
+            aria-hidden="true"
+            icon={addCircle}
+            slot="end"
+            onClick={openModal}
+            color="primary"
+          ></IonIcon>
+        </IonItem>
 
-          {alergenos.map((alergeno, index) => (
-            <IonItem key={index}>
-              <IonLabel>{alergeno}</IonLabel>
-            </IonItem>
-          ))}
-          <AddAllergenComponentModal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-          ></AddAllergenComponentModal>
-        </IonList>
-      </IonContent>
+        {alergenos.map((alergeno, index) => (
+          <IonItem key={index}>
+            <IonLabel>{alergeno}</IonLabel>
+          </IonItem>
+        ))}
+        <AddAllergenComponentModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        ></AddAllergenComponentModal>
+      </IonList>
     </>
   );
 };

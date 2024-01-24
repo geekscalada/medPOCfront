@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/AuthContext";
 import { useHistory } from "react-router-dom";
 
 import { ButtonConfig } from "../services/customModalComposer";
+import { mappingRoutes } from "../routes/MainRoutes";
 
 const LoginWithGoogleComponent = (
   onLoginSuccessCallbackToModal: () => void
@@ -28,7 +29,7 @@ const LoginWithGoogleComponent = (
       if (codeResponse) {
         setToken(codeResponse.code);
         onLoginSuccessCallbackToModal();
-        history.push("/findcode");
+        history.push(mappingRoutes.barcode.path);
       }
     },
     flow: "auth-code",

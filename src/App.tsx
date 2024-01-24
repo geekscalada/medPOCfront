@@ -1,12 +1,19 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
+  IonButtons,
+  IonContent,
+  IonHeader,
   IonIcon,
   IonLabel,
+  IonMenuButton,
+  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -30,16 +37,17 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import UserTab from "./components/UserTab";
+import UserTab from "./pages/UserTab";
 import { personCircle } from "ionicons/icons";
 import MainRoutes from "./routes/MainRoutes";
-import { mappingRoutes } from "./routes/MainRoutes";
+
 import TabBar from "./components/TabBar";
 import TabBarComponent from "./components/TabBar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { AuthProvider } from "./hooks/AuthContext";
+import { AuthProvider, useAuth } from "./hooks/AuthContext";
 
 import "./styles/customIonModal.scss";
+import IonicHeaderComponent from "./components/MenuComponent";
 
 setupIonicReact();
 
@@ -55,7 +63,6 @@ setupIonicReact();
 // TODO: use react-redux with this approx???? to show dark mode?
 // https://www.youtube.com/watch?v=fMiFnbufAP4&t=124s&ab_channel=CarlosAzaustre-AprendeJavaScript
 
-
 // TODO: change views for web design
 
 // TODO: height should be fixed to show all the content
@@ -68,24 +75,39 @@ const App: React.FC = () => {
     <GoogleOAuthProvider clientId="1097625209618-uikanbbdb42pc3h221vev6qpb6vdtr09.apps.googleusercontent.com">
       <AuthProvider>
         <IonApp>
+          <IonicHeaderComponent />
           <IonReactRouter>
-            <IonTabs>
-              {/* IonRouterOutlet siempre envuelve las rutas
-          gestiona la pila de navegación y las transiciones de manera eficiente, 
-          permitiendo comportamientos como mantener 
-          el estado de las páginas cuando navegas hacia adelante y hacia atrás          
-          */}
-              <IonRouterOutlet>
-                {MainRoutes}
-                {/* Aquí puedes añadir más rutas secundarias */}
-              </IonRouterOutlet>
-              {/* TabBar es un componente que además sirve de entrypoint para el resto,
-          de pages 
-          Podemos traernos la constante en vez de el componentes para evitar compatibilidades
-          de hijo-padre
-          */}
-              {TabBar}
-            </IonTabs>
+            <IonPage id="main-content">
+              {/* <IonHeader>
+                <IonToolbar>
+                  <IonButtons slot="start">
+                    <IonMenuButton></IonMenuButton>
+                  </IonButtons>
+                  <IonTitle>headerTitle</IonTitle>
+                </IonToolbar>
+              </IonHeader> */}
+              <IonContent className="ion-padding">
+                <IonTabs>
+                  {/* IonRouterOutlet siempre envuelve las rutas
+    gestiona la pila de navegación y las transiciones de manera eficiente, 
+    permitiendo comportamientos como mantener 
+    el estado de las páginas cuand
+    o navegas hacia adelante y hacia atrás          
+    */}
+
+                  <IonRouterOutlet>
+                    {MainRoutes}
+                    {/* Aquí puedes añadir más rutas secundarias */}
+                  </IonRouterOutlet>
+                  {/* TabBar es un componente que además sirve de entrypoint para el resto,
+    de pages 
+    Podemos traernos la constante en vez de el componentes para evitar compatibilidades
+    de hijo-padre
+    */}
+                  {TabBar}
+                </IonTabs>
+              </IonContent>
+            </IonPage>
           </IonReactRouter>
         </IonApp>
       </AuthProvider>
