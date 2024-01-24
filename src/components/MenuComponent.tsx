@@ -22,6 +22,7 @@ interface MenuItem {
   button: boolean;
   href?: string; // URL opcional para redireccionar
   hidden?: boolean; // Si el item del menú debe estar oculto
+  disabled?: boolean; // Si el item del menú debe estar deshabilitado
 }
 
 /**
@@ -58,7 +59,12 @@ function IonicHeaderComponent() {
           <IonList>
             {menuItems.map((item, index) => (
               <div key={index} hidden={item.hidden}>
-                <IonItem key={index} href={item.href} button={false}>
+                <IonItem
+                  key={index}
+                  href={item.href}
+                  button={item.button}
+                  disabled={item.disabled}
+                >
                   <IonIcon aria-hidden="true" slot="start" icon={item.icon} />
                   <IonLabel>{item.label}</IonLabel>
                 </IonItem>
