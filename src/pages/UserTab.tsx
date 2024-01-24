@@ -10,15 +10,15 @@ import {
   IonTitle,
   IonIcon,
   IonModal,
+  IonButtons,
+  IonMenuButton,
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
 
-import AddAllergenComponentModal from "./AddAllergenModal";
+import AddAllergenComponentModal from "../components/AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
 import { UserDataDTO } from "../models/types/types";
 import useModalHelper from "../hooks/useModalHelper";
-import useGlobalInfoContext from "../hooks/useGlobalInfoContext";
-import { useAuth } from "../hooks/AuthContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -34,19 +34,12 @@ const UserTab: React.FC = () => {
   // Pasaremos estas funciones como callbacks a los componentes hijos
   // Nos apoyamos en el helper para no tener que declarar handlers en cada componente
   const { isModalOpen, openModal, closeModal } = useModalHelper();
-  const { global } = useAuth();
-  const { setHeaderTitle } = global;
 
   const { data, loading, error } = useAxiosRequests<UserDataDTO>({
     method: "GET",
     url: apiUrl,
     headers: { "Content-Type": "application/json" },
   });
-
-  useEffect(() => {
-    // Cambiar miVariable justo después de la primera renderización
-    setHeaderTitle("User profile");
-  }, []);
 
   //generate tyoe of data
 
@@ -83,6 +76,14 @@ const UserTab: React.FC = () => {
 
   return (
     <>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>User profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonList>
         <IonItem>
           <IonLabel>Nombre: {nombre}</IonLabel>

@@ -9,8 +9,6 @@ import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 import { ModalComposer } from "../services/customModalComposer";
 import useModalHelper from "../hooks/useModalHelper";
 
-import useGlobalInfoContext from "../hooks/useGlobalInfoContext";
-
 export interface AddAllergenComponentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,8 +22,6 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
   const { isModalOpen, openModal, closeModal } = useModalHelper();
   const apiUrl = import.meta.env.VITE_API_URL;
   const [componentes, setComponentes] = useState<string[]>([]);
-
-  const { headerTitle, setHeaderTitle } = useGlobalInfoContext();
 
   /**
    * Logic to confirmation modal
@@ -48,11 +44,6 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
     optionsGet,
     2
   );
-
-  useEffect(() => {
-    // Cambiar miVariable justo después de la primera renderización
-    setHeaderTitle("Add Allergen");
-  }, []);
 
   useEffect(() => {
     if (isOpen) {

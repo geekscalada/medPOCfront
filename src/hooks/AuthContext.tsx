@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
 import useAuthToken from "./useAuthToken";
-import useGlobalInfoContext from "./useGlobalInfoContext";
 
 interface AuthContextType {
   token: string | null;
@@ -8,19 +7,10 @@ interface AuthContextType {
   removeToken: () => void;
 }
 
-interface ContextGlobalType {
-  headerTitle: string;
-  setHeaderTitle: (title: string) => void;
-}
-
-interface ContextType {
-  global: ContextGlobalType;
-  auth: AuthContextType;
-}
-
-const AuthContext = createContext<ContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
+  
   // Aquí accedemos al context
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -35,15 +25,9 @@ export interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { token, setToken, removeToken } = useAuthToken();
-  const { headerTitle, setHeaderTitle } = useGlobalInfoContext();
 
   return (
-    <AuthContext.Provider
-      value={{
-        auth: { token, setToken, removeToken },
-        global: { headerTitle, setHeaderTitle },
-      }}
-    >
+    <AuthContext.Provider value={{ token, setToken, removeToken }}>
       {children}
     </AuthContext.Provider>
   );

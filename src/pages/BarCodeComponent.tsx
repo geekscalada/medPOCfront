@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import {
+  IonButtons,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 
 const BarcodeScannerComponent: React.FC = () => {
   const [barcode, setBarcode] = useState<string>("");
@@ -31,10 +38,20 @@ const BarcodeScannerComponent: React.FC = () => {
   };
 
   return (
-    <div>
-      <button onClick={checkPermissionsAndScan}>Scan Barcode</button>
-      {barcode && <p>Scanned Barcode: {barcode}</p>}
-    </div>
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>Search a code</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <div>
+        <button onClick={checkPermissionsAndScan}>Scan Barcode</button>
+        {barcode && <p>Scanned Barcode: {barcode}</p>}
+      </div>
+    </>
   );
 };
 

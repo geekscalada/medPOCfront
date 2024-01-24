@@ -3,12 +3,12 @@ import { useAuth } from "../hooks/AuthContext";
 import { useHistory } from "react-router-dom";
 
 import { ButtonConfig } from "../services/customModalComposer";
+import { mappingRoutes } from "../routes/MainRoutes";
 
 const LoginWithGoogleComponent = (
   onLoginSuccessCallbackToModal: () => void
 ) => {
-  const { auth, global } = useAuth();
-  const { token, setToken, removeToken } = auth;
+  const { setToken, token, removeToken } = useAuth();
   const history = useHistory();
 
   //TODO: We need to use auth-code flow to get the code and send it to the backend
@@ -29,11 +29,10 @@ const LoginWithGoogleComponent = (
       if (codeResponse) {
         setToken(codeResponse.code);
         onLoginSuccessCallbackToModal();
-        history.push("/findcode");
+        history.push(mappingRoutes.barcode.path);
       }
     },
     flow: "auth-code",
-    //ux_mode: "redirect",
   });
 
   return { loginWithGoogleButton };

@@ -1,13 +1,14 @@
-import React from "react";
+import React, { Profiler } from "react";
 import { Redirect, Route } from "react-router-dom";
-import UserTab from "../components/UserTab";
-import ExploreContainer from "../components/ExploreContainer";
-import BarCode from "../components/BarCode";
-import SearchComponent from "../components/SearchComponent";
+import UserTab from "../pages/UserTab";
+import ExploreContainer from "../pages/SearchPage";
+
 import GuardRoutes from "../routes/GuardRoutes";
 import LoginPage from "../components/LoginWithGoogleComponent";
 import LoginPageModalComponent from "../components/LoginPageModalComponent";
-import BarCodeComponent from "../components/BarCodeComponent";
+import BarCodeComponent from "../pages/BarCodeComponent";
+import ConfigurationPage from "../pages/ConfigurationPage";
+import LogoutComponent from "../components/LogoutComponent";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -15,66 +16,62 @@ interface RouteConfig<T = any> {
   isRequiredAuth?: boolean;
 }
 
-const inyectingComponents = {
-  UserTab,
-  BarCode,
-  ExploreContainer,
-  SearchComponent,
-  LoginPage,
-  BarCodeComponent,
-};
+const paths = {
+  profile: "/profile",
+  configuration: "/configuration",
+  explorecomponent: "/explorecomponent",  
+  login: "/login",
+  barcode: "/barcode",
+  logout: "/logout",
+} as const; // Esto es un truco para que TS infiera el tipo de paths como un objeto con los valores de las rutas
+// cada valor es un literal y no un string
 
 export const mappingRoutes: {
-  [key in keyof typeof inyectingComponents]: RouteConfig<
-    keyof typeof inyectingComponents
-  >;
+  [key in keyof typeof paths]: RouteConfig<keyof typeof paths>;
 } = {
-  LoginPage: {
-    path: "/login",
-    component: LoginPageModalComponent,
-  },
-  UserTab: {
-    path: "/profile",
+  profile: {
+    path: paths.profile,
     component: UserTab, // Supongamos que UserTab es un React.FC sin props específicos
     isRequiredAuth: true,
   },
-  BarCode: {
-    path: "/findcode",
-    component: BarCode, // ExploreContainer es un React.FC<ContainerProps>
+  configuration: {
+    path: paths.configuration,
+    component: ConfigurationPage, // ExploreContainer es un React.FC<ContainerProps>
     isRequiredAuth: true,
   },
-  //TODO: remove this component only for learning purposes
-  ExploreContainer: {
-    path: "/explorecomponent",
+  explorecomponent: {
+    path: paths.explorecomponent,
     component: ExploreContainer, // ExploreContainer es un React.FC<ContainerProps>
     isRequiredAuth: true,
   },
-  SearchComponent: {
-    path: "/search",
-    component: SearchComponent,
-    isRequiredAuth: true,
+  
+  login: {
+    path: paths.login,
+    component: LoginPageModalComponent,
   },
-  BarCodeComponent: {
-    path: "/barcode",
+  barcode: {
+    path: paths.barcode,
     component: BarCodeComponent,
     isRequiredAuth: true,
   },
+  logout: {
+    path: paths.logout,
+    component: LogoutComponent,
+  },
 };
-
-// <Route path="*" render={() => <Redirect to="/perfil" />} />
 
 const MainRoutes = (
   <>
     <Route
       exact
       path={"/"}
-      render={() => <Redirect to={mappingRoutes.BarCode.path} />}
+      render={() => <Redirect to={mappingRoutes.barcode.path} />}
     />
-    <Route
+    {/* <Route
       exact
       path="*"
       render={() => <Redirect to={mappingRoutes.BarCode.path} />}
-    />
+    /> */}
     {/* Key evita el warning de React sobre el uso del mismo valor como key en los hijos */}
     {/* Aquí usamos ProtectedRoute para las rutas que deben estar protegidas */}
     {Object.entries(mappingRoutes).map(([key, route]) => {

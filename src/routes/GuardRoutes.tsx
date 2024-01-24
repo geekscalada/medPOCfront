@@ -17,8 +17,7 @@ const GuardRoutes: React.FC<ProtectedRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { auth } = useAuth();
-  const { token } = auth;
+  const { token } = useAuth();
 
   return (
     <Route
