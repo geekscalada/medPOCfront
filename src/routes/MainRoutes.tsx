@@ -9,6 +9,7 @@ import LoginPageModalComponent from "../components/LoginPageModalComponent";
 import BarCodeComponent from "../pages/BarCodeComponent";
 import ConfigurationPage from "../pages/ConfigurationPage";
 import LogoutComponent from "../components/LogoutComponent";
+import GoogleCapacitorLogin from "../components/GoogleCapacitorLogin";
 
 interface RouteConfig<T = any> {
   path: string;
@@ -19,10 +20,11 @@ interface RouteConfig<T = any> {
 const paths = {
   profile: "/profile",
   configuration: "/configuration",
-  explorecomponent: "/explorecomponent",  
+  explorecomponent: "/explorecomponent",
   login: "/login",
   barcode: "/barcode",
   logout: "/logout",
+  loginCapacitor: "/loginCapacitor",
 } as const; // Esto es un truco para que TS infiera el tipo de paths como un objeto con los valores de las rutas
 // cada valor es un literal y no un string
 
@@ -44,7 +46,7 @@ export const mappingRoutes: {
     component: ExploreContainer, // ExploreContainer es un React.FC<ContainerProps>
     isRequiredAuth: true,
   },
-  
+
   login: {
     path: paths.login,
     component: LoginPageModalComponent,
@@ -57,6 +59,10 @@ export const mappingRoutes: {
   logout: {
     path: paths.logout,
     component: LogoutComponent,
+  },
+  loginCapacitor: {
+    path: paths.loginCapacitor,
+    component: GoogleCapacitorLogin,
   },
 };
 
