@@ -51,14 +51,15 @@ import IonicHeaderComponent from "./components/MenuComponent";
 
 setupIonicReact();
 
+//TODO: new login with capacitor
+
+//TODO: Check component bar code
+
+// TODO: implement items to search
+
 //TODO: check if login works well in mobile
 
-// TODO: header ionic with options, and logout with https://ionicframework.com/docs/api/menu
-// and header should change depending on the page
-
-// TODO: management of errors with custom exceptions (new error), handLeError (with axios)  and then show toatss
-// toast with the message. Maybe not custom exceptions, but just a new error with the message because
-// it will be better do that in the backend
+//TODO: implement logger in axiosrequestsHooks
 
 // TODO: use react-redux with this approx???? to show dark mode?
 // https://www.youtube.com/watch?v=fMiFnbufAP4&t=124s&ab_channel=CarlosAzaustre-AprendeJavaScript
@@ -67,9 +68,6 @@ setupIonicReact();
 
 // TODO: height should be fixed to show all the content
 
-// TODO: when api is down, then profile page is re-rendering and doing calls in a bucle?
-
-//TODO: when API calls fails, then don't show component?
 const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="1097625209618-uikanbbdb42pc3h221vev6qpb6vdtr09.apps.googleusercontent.com">
