@@ -12,6 +12,7 @@ import {
   IonModal,
   IonButtons,
   IonMenuButton,
+  IonLoading,
 } from "@ionic/react";
 import { addCircle } from "ionicons/icons";
 
@@ -19,6 +20,8 @@ import AddAllergenComponentModal from "../components/AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
 import { UserDataDTO } from "../models/types/types";
 import useModalHelper from "../hooks/useModalHelper";
+import ErrorPage from "../components/ErrorPage";
+import LoadingComponent from "../components/LoadingComponent";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -35,11 +38,13 @@ const UserTab: React.FC = () => {
   // Nos apoyamos en el helper para no tener que declarar handlers en cada componente
   const { isModalOpen, openModal, closeModal } = useModalHelper();
 
-  const { data, loading, error } = useAxiosRequests<UserDataDTO>({
-    method: "GET",
-    url: apiUrl,
-    headers: { "Content-Type": "application/json" },
-  });
+  const { data, loading, error } = useAxiosRequests<UserDataDTO>(
+    {
+      method: "GET",
+      url: "/profile",
+    },
+    true
+  );
 
   //generate tyoe of data
 
@@ -66,13 +71,16 @@ const UserTab: React.FC = () => {
     }
   }, [data]);
 
-  // const handleOpenAddAllergenModal = () => {
-  //   setIsModalOpen(true);
-  // };
+  // TODO: implement a spinnes to loading
+  // TODO: implement a component of error
 
-  // const handleCloseAddAllergenModal = () => {
-  //   setIsModalOpen(false);
-  // };s
+  if (loading) {
+    return <LoadingComponent />;
+  }
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <>
