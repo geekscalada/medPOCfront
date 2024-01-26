@@ -8,6 +8,7 @@ import {
 import LoginWithGoogleComponent from "./LoginWithGoogleComponent";
 import { IonText } from "@ionic/react";
 import useModalHelper from "../hooks/useModalHelper";
+import GoogleCapacitorLogin from "./GoogleCapacitorLogin";
 
 const LoginPageModalComponent: React.FC = () => {
   const { isModalOpen, openModal, closeModal } = useModalHelper({
@@ -21,8 +22,8 @@ const LoginPageModalComponent: React.FC = () => {
     closeModal();
   };
 
-  const { loginWithGoogleButton } =
-    LoginWithGoogleComponent(closeModalCallback);
+  const { loginWithCapacitorGoogle } = GoogleCapacitorLogin(closeModalCallback);
+    
 
   const modalComposer: ModalComposer = {
     titleModal: "Login",
@@ -32,7 +33,7 @@ const LoginPageModalComponent: React.FC = () => {
       </IonText>
     ),
     content: null,
-    buttons: [loginWithGoogleButton],
+    buttons: [loginWithCapacitorGoogle],
     containerButtonStyle: {
       flexDirection: "column",
       justifyContent: "center",
