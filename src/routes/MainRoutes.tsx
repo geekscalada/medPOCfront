@@ -24,7 +24,6 @@ const paths = {
   login: "/login",
   barcode: "/barcode",
   logout: "/logout",
-  loginCapacitor: "/loginCapacitor",
 } as const; // Esto es un truco para que TS infiera el tipo de paths como un objeto con los valores de las rutas
 // cada valor es un literal y no un string
 
@@ -59,10 +58,6 @@ export const mappingRoutes: {
   logout: {
     path: paths.logout,
     component: LogoutComponent,
-  },
-  loginCapacitor: {
-    path: paths.loginCapacitor,
-    component: GoogleCapacitorLogin,
   },
 };
 
