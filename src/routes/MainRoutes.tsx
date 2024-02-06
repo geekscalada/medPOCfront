@@ -4,11 +4,12 @@ import UserTab from "../pages/UserTab";
 import ExploreContainer from "../pages/SearchPage";
 
 import GuardRoutes from "../routes/GuardRoutes";
-import LoginPage from "../components/LoginWithGoogleComponent";
+
 import LoginPageModalComponent from "../components/LoginPageModalComponent";
 import BarCodeComponent from "../pages/BarCodeComponent";
 import ConfigurationPage from "../pages/ConfigurationPage";
 import LogoutComponent from "../components/LogoutComponent";
+
 
 interface RouteConfig<T = any> {
   path: string;
@@ -19,7 +20,7 @@ interface RouteConfig<T = any> {
 const paths = {
   profile: "/profile",
   configuration: "/configuration",
-  explorecomponent: "/explorecomponent",  
+  explorecomponent: "/explorecomponent",
   login: "/login",
   barcode: "/barcode",
   logout: "/logout",
@@ -44,7 +45,7 @@ export const mappingRoutes: {
     component: ExploreContainer, // ExploreContainer es un React.FC<ContainerProps>
     isRequiredAuth: true,
   },
-  
+
   login: {
     path: paths.login,
     component: LoginPageModalComponent,
