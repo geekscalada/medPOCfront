@@ -5,10 +5,10 @@ import {
   ModalComposer,
 } from "../services/customModalComposer";
 
-import LoginWithGoogleComponent from "./LoginWithGoogleComponent";
+
 import { IonText } from "@ionic/react";
 import useModalHelper from "../hooks/useModalHelper";
-import GoogleCapacitorLogin from "./GoogleCapacitorLogin";
+import GoogleCapacitorLogin from "./GoogleCapacitorLoginButton";
 
 const LoginPageModalComponent: React.FC = () => {
   const { isModalOpen, openModal, closeModal } = useModalHelper({
@@ -23,7 +23,6 @@ const LoginPageModalComponent: React.FC = () => {
   };
 
   const { loginWithCapacitorGoogle } = GoogleCapacitorLogin(closeModalCallback);
-    
 
   const modalComposer: ModalComposer = {
     titleModal: "Login",

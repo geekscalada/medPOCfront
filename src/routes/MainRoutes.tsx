@@ -4,12 +4,12 @@ import UserTab from "../pages/UserTab";
 import ExploreContainer from "../pages/SearchPage";
 
 import GuardRoutes from "../routes/GuardRoutes";
-import LoginPage from "../components/LoginWithGoogleComponent";
+
 import LoginPageModalComponent from "../components/LoginPageModalComponent";
 import BarCodeComponent from "../pages/BarCodeComponent";
 import ConfigurationPage from "../pages/ConfigurationPage";
 import LogoutComponent from "../components/LogoutComponent";
-import GoogleCapacitorLogin from "../components/GoogleCapacitorLogin";
+
 
 interface RouteConfig<T = any> {
   path: string;

@@ -19,7 +19,7 @@ const GoogleCapacitorLogin = (onLoginSuccessCallbackToModal: () => void) => {
   });
 
   const loginWithCapacitorGoogle: ButtonConfig = {
-    text: "Sign in with capacitorrr",
+    text: "Sign in with Google 🚀",
     onClick: () => signIn(),
     strong: true,
     disabled: false,
