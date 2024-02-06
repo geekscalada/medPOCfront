@@ -11,6 +11,7 @@ import {
 } from "@ionic/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAxiosRequests from "../services/useAxiosRequests";
+import { AxiosRequestConfig } from "axios";
 
 // Suponiendo que tienes una interfaz para tus ítems
 interface Item {
@@ -24,44 +25,49 @@ interface ApiResponse {
 }
 
 const SearchCompoment: FC = () => {
+  console.log("Rendering search component");
   const [valor, setValor] = useState<string>("");
   const [items, setItems] = useState<Item[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
 
+  const [options, setOptions] = useState<AxiosRequestConfig>({
+    method: "GET",
+    url: "/medicamentos/paracetamol",
+  });
+
+  //TODO: Implement this
   const totalDataCount = 100; // Ajusta esto según tu API
 
-  const { data, loading, error } = useAxiosRequests<ApiResponse>(
+  const { data, loading, error } = useAxiosRequests<any>(
     {
-      method: "POST",
-      url: "https://cima.aemps.es/cima/rest/buscarEnFichaTecnica?pagina=1",
-      data: [{ seccion: "4.1", texto: "paracetamol", contiene: "1" }],
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        origin: "x-requested-with",
-        "Access-Control-Allow-Headers":
-          "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
-        "Content-Type": "application/json",
-      },
+      method: "GET",
+      url: "/medicamentos/paracetamol",
     },
     true
   );
 
-  const fetchMoreData = useCallback(async () => {
-    if (items.length >= totalDataCount) {
-      setHasMore(false);
-      return;
-    }
+  const fetchMoreData = () => {
+    console.log("fetching data");
 
-    if (!loading && data && !error) {
-      setItems((prevItems) => [...prevItems, ...data.newItems]);
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [page, items]);
+    setOptions({
+      method: "GET",
+      url: "/medicamentos/paracetamol",
+    });
+  };
 
   useEffect(() => {
+    if (data) {
+      console.log("useEffect to set data");
+      setItems(data.resultados);
+      console.log(data.resultados);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log("useEffect");
     fetchMoreData();
-  }, [fetchMoreData]);
+  }, []);
 
   return (
     <>
@@ -74,23 +80,21 @@ const SearchCompoment: FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonSearchbar
-        placeholder="Busca un alérgeno"
+        placeholder="Busca por principio activo, marca..."
         value={valor}
         onIonChange={(e) => setValor(e.detail.value!)}
       />
       <IonContent>
         <IonList>
           <InfiniteScroll
-            dataLength={items.length}
+            dataLength={96}
             next={fetchMoreData}
             hasMore={hasMore}
             loader={<h4>Cargando...</h4>}
           >
+            <p>asfasdfsdf</p>
             {items.map((item, index) => (
-              <div key={index}>
-                {/* Renderiza tu ítem aquí. Asegúrate de ajustar esta parte según tu estructura de datos. */}
-                <p>{index}</p>
-              </div>
+              <p key={index}>{index}</p>
             ))}
           </InfiniteScroll>
         </IonList>

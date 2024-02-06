@@ -23,7 +23,6 @@ import useModalHelper from "../hooks/useModalHelper";
 import ErrorPage from "../components/ErrorPage";
 import LoadingComponent from "../components/LoadingComponent";
 
-const apiUrl = import.meta.env.VITE_API_URL;
 
 //TODO: maybe use redux to manage user data for all the app
 
