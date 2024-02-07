@@ -1,7 +1,11 @@
 import { IonLoading } from "@ionic/react";
 
-const LoadingComponent = () => {
-  return <IonLoading isOpen={true} message="Loading..." />;
+interface LoadingComponentProps {
+  isOpen: boolean;
+}
+
+const LoadingComponent: React.FC<LoadingComponentProps> = ({ isOpen }) => {
+  return <IonLoading isOpen={isOpen} message="Loading..." />;
 };
 
 export default LoadingComponent;

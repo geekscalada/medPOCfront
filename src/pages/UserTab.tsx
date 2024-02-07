@@ -14,7 +14,7 @@ import {
   IonMenuButton,
   IonLoading,
 } from "@ionic/react";
-import { addCircle } from "ionicons/icons";
+import { addCircle, trendingUpOutline } from "ionicons/icons";
 
 import AddAllergenComponentModal from "../components/AddAllergenModal";
 import useAxiosRequests from "../services/useAxiosRequests";
@@ -33,6 +33,7 @@ const UserTab: React.FC = () => {
   const [apellido, setApellido] = useState("");
   const [nombreDeUsuario, setNombreDeUsuario] = useState("");
   const [alergenos, setAlergenos] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Pasaremos estas funciones como callbacks a los componentes hijos
   // Nos apoyamos en el helper para no tener que declarar handlers en cada componente
@@ -63,20 +64,14 @@ const UserTab: React.FC = () => {
   // Después, ejecuta la función del efecto.
   useEffect(() => {
     if (data) {
-      console.log(data);
       setNombre(data.nombre);
       setApellido(data.apellido);
       setNombreDeUsuario(data.nombreDeUsuario);
       setAlergenos(data.alergenos);
     }
-  }, [data]);
 
-  // TODO: implement a spinnes to loading
-  // TODO: implement a component of error
-
-  if (loading) {
-    return <LoadingComponent />;
-  }
+    setIsLoading(loading);
+  }, [data, loading]);
 
   if (error) {
     return <ErrorPage />;
@@ -84,6 +79,7 @@ const UserTab: React.FC = () => {
 
   return (
     <>
+      <LoadingComponent isOpen={isLoading && !data}></LoadingComponent>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -116,7 +112,6 @@ const UserTab: React.FC = () => {
             color="primary"
           ></IonIcon>
         </IonItem>
-
         {alergenos.map((alergeno, index) => (
           <IonItem key={index}>
             <IonLabel>{alergeno}</IonLabel>

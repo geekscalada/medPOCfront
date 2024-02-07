@@ -10,55 +10,7 @@ import {
 } from "@ionic/react";
 
 import "../styles/customIonModal.scss";
-
-export interface ButtonConfig {
-  color?: string;
-  disabled?: boolean;
-  expand?: "full" | "block";
-  fill?: "clear" | "outline" | "solid" | "default";
-  href?: string;
-  mode?: "ios" | "md";
-  rel?: string;
-  routerDirection?: "forward" | "back" | "root";
-  shape?: "round";
-  size?: "small" | "default" | "large";
-  strong?: boolean;
-  type?: "submit" | "reset" | "button";
-  download?: string;
-  target?: "_self" | "_blank" | "_parent" | "_top";
-  onClick?: (event: React.MouseEvent) => void;
-  onFocus?: (event: React.FocusEvent) => void;
-  onBlur?: (event: React.FocusEvent) => void;
-  callBackButtonCustomFunction?: () => void;
-  text: string; // propiedad personalizada que no está en la API de Ionic
-}
-
-export type FlexStyle = {
-  flexDirection: "column" | "row";
-  justifyContent?: "center" | "flex-start" | "flex-end" | "space-between";
-};
-
-type ButtonContainerStyle = FlexStyle & {
-  display: string;
-  gap: string;
-  flex: string;
-};
-
-export type ModalSize = {
-  width: string;
-  height: string;
-};
-
-export type ModalComposer = {
-  titleModal: string;
-  headerModal?: React.ReactNode;
-  content?: React.ReactNode;
-  buttons?: ButtonConfig[];
-  containerButtonStyle?: FlexStyle;
-  modalSize: ModalSize;
-  canDismissModal?: any;
-  closeButtonHeader?: boolean;
-};
+import { ModalComposer, ButtonContainerStyle } from "./types.services";
 
 export interface CustomIonModalProps {
   modalComposer: ModalComposer;
@@ -79,16 +31,16 @@ export const CustomModalComponent: React.FC<CustomIonModalProps> = ({
   const buttonContainerStyle: ButtonContainerStyle = {
     display: "flex",
     flexDirection:
-      modalComposer.containerButtonStyle?.flexDirection ?? "column",
+      modalComposer.buttonContainer.containerButtonStyle?.flexDirection ?? "column",
     gap: "3px",
     flex: "0.5",
     justifyContent:
-      modalComposer.containerButtonStyle?.justifyContent ?? "center",
+      modalComposer.buttonContainer.containerButtonStyle?.justifyContent ?? "center",
   };
 
   const renderButtons = () => {
-    if (modalComposer.buttons) {
-      return modalComposer?.buttons.map((buttonConfig, index) => (
+    if (modalComposer.buttonContainer.buttons) {
+      return modalComposer?.buttonContainer.buttons.map((buttonConfig, index) => (
         <IonButton key={index} {...buttonConfig}>
           {buttonConfig.text}
         </IonButton>
