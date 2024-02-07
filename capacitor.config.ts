@@ -6,6 +6,8 @@ const config: CapacitorConfig = {
   webDir: "dist",
   server: {
     androidScheme: "https",
+    url: "http://192.168.33.9:8100",
+    cleartext: true,
   },
   plugins: {
     GoogleAuth: {

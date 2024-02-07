@@ -1,12 +1,26 @@
-/* Hide all elements */
+/* Estilos existentes */
 body.barcode-scanner-active {
   visibility: hidden;
   --background: transparent;
   --ion-background-color: transparent;
+  border: 10px rgb(90, 78, 223);
 }
 
-/* Show only the barcode scanner modal */
-.barcode-scanner-modal {
+.square {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 16px;
+  width: 200px;
+  height: 200px;
+  border: 6px solid rgb(188, 34, 34);
+  visibility: visible;
+
+  /* box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.3); */
+}
+
+.overwritte-hidden {
   visibility: visible;
 }
 

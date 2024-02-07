@@ -1,57 +1,107 @@
-import React, { useState } from "react";
-import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import React, { useState, useEffect } from "react";
 import {
-  IonButtons,
-  IonHeader,
-  IonMenuButton,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+  BarcodeScanner,
+  BarcodeFormat,
+} from "@capacitor-mlkit/barcode-scanning";
 
-const BarcodeScannerComponent: React.FC = () => {
-  const [barcode, setBarcode] = useState<string>("");
+import "./BarCodeComponent.css";
+import { IonButton, IonContent } from "@ionic/react";
+import { ButtonConfig, ButtonContainerStyle } from "../services/customModalComposer";
 
-  const checkPermissionsAndScan = async () => {
-    // Check if the scanner is supported
-    const isSupported = await BarcodeScanner.isSupported();
-    if (!isSupported) {
-      alert("Scanner not supported on this device");
-      return;
-    }
+const BarcodeScannerComponent = () => {
+  const [isTorchOn, setIsTorchOn] = useState(false);
+  const [zoomRatio, setZoomRatio] = useState(1);
 
-    // Request permissions
-    const permission = await BarcodeScanner.requestPermissions();
-    if (permission.camera !== "granted") {
-      alert("Camera permission is required");
-      return;
-    }
+  // Iniciar el escaneo de códigos de barras
+  const startScan = async () => {
+    document.querySelector("body")?.classList.add("barcode-scanner-active");
 
-    // Start scanning
-    try {
-      const result = await BarcodeScanner.scan();
-      if (result.barcodes.length > 0) {
-        setBarcode(result.barcodes[0].rawValue);
+    const listener = await BarcodeScanner.addListener(
+      "barcodeScanned",
+      async (result) => {
+        console.log(result.barcode);
       }
-    } catch (error) {
-      console.error("Scanning failed", error);
-    }
+    );
+
+    await BarcodeScanner.startScan();
   };
 
+  // Detener el escaneo de códigos de barras
+  const stopScan = async () => {
+    document.querySelector("body")?.classList.remove("barcode-scanner-active");
+    await BarcodeScanner.removeAllListeners();
+    await BarcodeScanner.stopScan();
+  };
+
+  // Manejar el encendido/apagado de la linterna
+  const toggleTorch = async () => {
+    const { enabled } = await BarcodeScanner.isTorchEnabled();
+    if (enabled) {
+      await BarcodeScanner.disableTorch();
+    } else {
+      await BarcodeScanner.enableTorch();
+    }
+    setIsTorchOn(!enabled);
+  };
+
+  // Ajustar el zoom
+  // const handleSetZoomRatio = async (ratio) => {
+  //   await BarcodeScanner.setZoomRatio({ zoomRatio: ratio });
+  //   setZoomRatio(ratio);
+  // };
+
+  // Efectos para manejar el ciclo de vida del componente
+  useEffect(() => {
+    // Opciones de configuración o inicialización
+
+    return () => {
+      // Limpieza al desmontar el componente
+      stopScan();
+    };
+  }, []);
+
+  const buttonContainerStyle: ButtonContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "3px",
+    flex: "0.5",
+    justifyContent: "center",
+  };
+
+ const myButtonConfig : ButtonConfig = {
+  color : "primary",
+  text: "boton1"
+
+ }
+
+  
+ }
+
   return (
-    <>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Search a code</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <div>
-        <button onClick={checkPermissionsAndScan}>Scan Barcode</button>
-        {barcode && <p>Scanned Barcode: {barcode}</p>}
-      </div>
-    </>
+    // <div className="hola">
+    //   <IonButton onClick={startScan}>Start Scan</IonButton>
+    //   <IonButton onClick={stopScan}>Stop Scan</IonButton>
+
+    //   <div>
+    //     {/* <label>
+    //       Zoom Ratio:
+    //       <input type="range" min="1" max="10" value={zoomRatio} onChange={(e) => handleSetZoomRatio(e.target.value)} />
+    //     </label> */}
+    //   </div>
+    // </div>
+
+    <div className="container-scanner">
+      <IonButton onClick={startScan}>Start Scan</IonButton>
+      <IonButton onClick={stopScan} className="overwritte-hidden">
+        Stop Scan
+      </IonButton>
+      <div className="square"></div>
+      <IonContent>
+      <div style={buttonContainerStyle}>{renderButtons()}</div>
+      </IonContent>
+
+      {/* Los botones y otros controles como antes */}
+    </div>
   );
 };
 
