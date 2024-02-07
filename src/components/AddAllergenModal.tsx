@@ -6,8 +6,9 @@ import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { ArrayAllergens } from "../models/types/types";
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
-import { ModalComposer } from "../services/customModalComposer";
+
 import useModalHelper from "../hooks/useModalHelper";
+import { ModalComposer } from "../services/types.services";
 
 export interface AddAllergenComponentModalProps {
   isOpen: boolean;
@@ -98,7 +99,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
         </div>
       </>
     ),
-    buttons: [],
+    buttonContainer: {},
     modalSize: {
       width: "550px",
       height: "650px",

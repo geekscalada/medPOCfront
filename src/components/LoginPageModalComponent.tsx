@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 
-import {
-  CustomModalComponent,
-  ModalComposer,
-} from "../services/customModalComposer";
-
+import { CustomModalComponent } from "../services/customModalComposer";
 
 import { IonText } from "@ionic/react";
 import useModalHelper from "../hooks/useModalHelper";
 import GoogleCapacitorLogin from "./GoogleCapacitorLoginButton";
+import { ModalComposer } from "../services/types.services";
 
 const LoginPageModalComponent: React.FC = () => {
   const { isModalOpen, openModal, closeModal } = useModalHelper({
@@ -32,10 +29,12 @@ const LoginPageModalComponent: React.FC = () => {
       </IonText>
     ),
     content: null,
-    buttons: [loginWithCapacitorGoogle],
-    containerButtonStyle: {
-      flexDirection: "column",
-      justifyContent: "center",
+    buttonContainer: {
+      buttons: [loginWithCapacitorGoogle],
+      containerButtonStyle: {
+        flexDirection: "column",
+        justifyContent: "center",
+      },
     },
     modalSize: {
       width: "400px",
