@@ -2,10 +2,11 @@
 import React from "react";
 import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { IonButton } from "@ionic/react";
-import { ButtonConfig } from "../services/customModalComposer";
+
 import { useHistory } from "react-router";
 import { useAuth } from "../hooks/AuthContext";
 import { mappingRoutes } from "../routes/MainRoutes";
+import { ButtonConfig } from "../services/types.services";
 
 const GoogleCapacitorLogin = (onLoginSuccessCallbackToModal: () => void) => {
   const { setToken, token, removeToken } = useAuth();

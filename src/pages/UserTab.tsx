@@ -112,7 +112,6 @@ const UserTab: React.FC = () => {
             color="primary"
           ></IonIcon>
         </IonItem>
-
         {alergenos.map((alergeno, index) => (
           <IonItem key={index}>
             <IonLabel>{alergeno}</IonLabel>
