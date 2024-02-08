@@ -1,39 +1,69 @@
 import React, { useState, useEffect } from "react";
-import {
-  BarcodeScanner,
-  BarcodeFormat,
-} from "@capacitor-mlkit/barcode-scanning";
-
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import { IonButton } from "@ionic/react";
+import { useHistory } from "react-router";
+import { App as CapApp } from "@capacitor/app";
 import "./BarCodeComponent.css";
-import { IonButton, IonContent } from "@ionic/react";
-import { ButtonConfig, ButtonContainerStyle } from "../services/customModalComposer";
+import { ButtonConfig, ButtonContainer } from "../services/types.services";
+import { CustomContainerButtonsComposer } from "../services/customContainerButtonsComposer";
+import { mappingRoutes } from "../routes/MainRoutes";
+
+//TODO: barCodeScanning not set the lastScannedBarCode
 
 const BarcodeScannerComponent = () => {
+  const history = useHistory();
+
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [zoomRatio, setZoomRatio] = useState(1);
+  const [isScanning, setIsScanning] = useState(false);
 
-  // Iniciar el escaneo de códigos de barras
+  const [lastScannedBarcode, setLastScannedBarcode] = useState<string>("");
+
   const startScan = async () => {
-    document.querySelector("body")?.classList.add("barcode-scanner-active");
+    console.log("+++++++++++Starting scan");
 
+    document.querySelector("body")?.classList.add("barcode-scanner-active");
     const listener = await BarcodeScanner.addListener(
       "barcodeScanned",
       async (result) => {
-        console.log(result.barcode);
+        console.log("-------------> setting values");
+        setLastScannedBarcode("hola");
+        console.log(
+          "acabo de setear lastScannedBarcode con: ",
+          result.barcode.displayValue
+        );
+        if (result.barcode.displayValue !== lastScannedBarcode) {
+          console.log(
+            "result.barcode.displayValue",
+            result.barcode.displayValue
+          );
+          console.log("lastScannedBarcode", lastScannedBarcode);
+          console.log("this is one result", result.barcode);
+          alert(`Codigo de barras: ${result.barcode.displayValue}`);
+        }
       }
     );
-
     await BarcodeScanner.startScan();
+    setIsScanning(true);
   };
 
-  // Detener el escaneo de códigos de barras
   const stopScan = async () => {
-    document.querySelector("body")?.classList.remove("barcode-scanner-active");
-    await BarcodeScanner.removeAllListeners();
-    await BarcodeScanner.stopScan();
+    if (isScanning) {
+      // Solo intenta detener el escaneo si está activo
+      document
+        .querySelector("body")
+        ?.classList.remove("barcode-scanner-active");
+      await BarcodeScanner.removeAllListeners();
+      await BarcodeScanner.stopScan();
+      setIsScanning(false); // Actualiza el estado para reflejar que el escaneo ha terminado
+    }
   };
 
-  // Manejar el encendido/apagado de la linterna
+  const stopAndExit = async () => {
+    await stopScan();
+    history.push(mappingRoutes.profile.path);
+  };
+
   const toggleTorch = async () => {
     const { enabled } = await BarcodeScanner.isTorchEnabled();
     if (enabled) {
@@ -44,64 +74,61 @@ const BarcodeScannerComponent = () => {
     setIsTorchOn(!enabled);
   };
 
-  // Ajustar el zoom
-  // const handleSetZoomRatio = async (ratio) => {
-  //   await BarcodeScanner.setZoomRatio({ zoomRatio: ratio });
-  //   setZoomRatio(ratio);
-  // };
+  const backButtonSub = CapApp.addListener("backButton", async (e) => {
+    await stopAndExit();
+  });
 
-  // Efectos para manejar el ciclo de vida del componente
+  const unmountComponent = async () => {
+    await backButtonSub.remove();
+    await stopScan();
+  };
+
   useEffect(() => {
-    // Opciones de configuración o inicialización
+    startScan();
 
     return () => {
-      // Limpieza al desmontar el componente
-      stopScan();
+      /**
+       * This is not working now
+       */
+      //unmountComponent();
     };
   }, []);
 
-  const buttonContainerStyle: ButtonContainerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "3px",
-    flex: "0.5",
-    justifyContent: "center",
+  const stopScanButton: ButtonConfig = {
+    text: "STOP SCAN",
+    strong: true,
+    disabled: false,
+    shape: "round",
+    onClick: stopAndExit,
   };
 
- const myButtonConfig : ButtonConfig = {
-  color : "primary",
-  text: "boton1"
+  const searchByFileButton: ButtonConfig = {
+    text: "SEARCH BY FILE",
+    strong: true,
+    disabled: true,
+    shape: "round",
+  };
 
- }
-
-  
- }
+  const myButtonContainer: ButtonContainer = {
+    buttons: [stopScanButton, searchByFileButton],
+    containerButtonStyle: {
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+    sizeContainer: {
+      width: "300px",
+      height: "300px",
+    },
+  };
 
   return (
-    // <div className="hola">
-    //   <IonButton onClick={startScan}>Start Scan</IonButton>
-    //   <IonButton onClick={stopScan}>Stop Scan</IonButton>
-
-    //   <div>
-    //     {/* <label>
-    //       Zoom Ratio:
-    //       <input type="range" min="1" max="10" value={zoomRatio} onChange={(e) => handleSetZoomRatio(e.target.value)} />
-    //     </label> */}
-    //   </div>
-    // </div>
-
-    <div className="container-scanner">
-      <IonButton onClick={startScan}>Start Scan</IonButton>
-      <IonButton onClick={stopScan} className="overwritte-hidden">
-        Stop Scan
-      </IonButton>
+    <>
       <div className="square"></div>
-      <IonContent>
-      <div style={buttonContainerStyle}>{renderButtons()}</div>
-      </IonContent>
-
-      {/* Los botones y otros controles como antes */}
-    </div>
+      <CustomContainerButtonsComposer
+        className="container-buttons"
+        buttonContainer={myButtonContainer}
+      ></CustomContainerButtonsComposer>
+    </>
   );
 };
 

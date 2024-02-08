@@ -50,9 +50,9 @@ export type ModalComposer = {
 
 export type ButtonContainer = {
   buttons?: ButtonConfig[];
-  containerButtonStyle?: FlexStyle;,
+  containerButtonStyle?: FlexStyle;
   sizeContainer?: {
-    width? : string,
-    height?: string
-  }
+    width?: string;
+    height?: string;
+  };
 };

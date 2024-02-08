@@ -3,11 +3,12 @@ import { ButtonContainer, ButtonContainerStyle } from "./types.services";
 
 export interface CustomContainerButtonsProps {
   buttonContainer: ButtonContainer;
+  className?: string;
 }
 
 export const CustomContainerButtonsComposer: React.FC<
   CustomContainerButtonsProps
-> = ({ buttonContainer }) => {
+> = ({ buttonContainer, className }) => {
   const buttonContainerStyle: ButtonContainerStyle = {
     display: "flex",
     flexDirection:
@@ -31,10 +32,8 @@ export const CustomContainerButtonsComposer: React.FC<
   };
 
   return (
-    <>
-      <IonContent>
-        <div style={buttonContainerStyle}>{renderButtons()}</div>
-      </IonContent>
-    </>
+    <div style={buttonContainerStyle} className={className}>
+      {renderButtons()}
+    </div>
   );
 };

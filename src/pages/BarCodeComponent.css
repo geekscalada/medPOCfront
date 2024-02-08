@@ -3,7 +3,6 @@ body.barcode-scanner-active {
   visibility: hidden;
   --background: transparent;
   --ion-background-color: transparent;
-  border: 10px rgb(90, 78, 223);
 }
 
 .square {
@@ -20,8 +19,10 @@ body.barcode-scanner-active {
   /* box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.3); */
 }
 
-.overwritte-hidden {
+.container-buttons {
   visibility: visible;
+  margin: auto;
+  margin-top: 412px;
 }
 
 @media (prefers-color-scheme: dark) {

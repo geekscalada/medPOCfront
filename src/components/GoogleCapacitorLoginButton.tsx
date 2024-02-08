@@ -12,6 +12,7 @@ const GoogleCapacitorLogin = (onLoginSuccessCallbackToModal: () => void) => {
   const { setToken, token, removeToken } = useAuth();
   const history = useHistory();
 
+  //TODO: to .env
   GoogleAuth.initialize({
     clientId:
       "1097625209618-uikanbbdb42pc3h221vev6qpb6vdtr09.apps.googleusercontent.com",
