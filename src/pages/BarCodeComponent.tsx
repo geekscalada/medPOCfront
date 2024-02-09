@@ -15,47 +15,38 @@ const BarcodeScannerComponent = () => {
 
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [zoomRatio, setZoomRatio] = useState(1);
-  const [isScanning, setIsScanning] = useState(false);
+  const [cameraIsWorking, setCameraIsWorking] = useState(false);
 
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string>("");
 
   const startScan = async () => {
-    console.log("+++++++++++Starting scan");
+    console.log("start scan ***************");
+    let lastCode = "";
 
     document.querySelector("body")?.classList.add("barcode-scanner-active");
     const listener = await BarcodeScanner.addListener(
       "barcodeScanned",
       async (result) => {
-        console.log("-------------> setting values");
-        setLastScannedBarcode("hola");
-        console.log(
-          "acabo de setear lastScannedBarcode con: ",
-          result.barcode.displayValue
-        );
-        if (result.barcode.displayValue !== lastScannedBarcode) {
-          console.log(
-            "result.barcode.displayValue",
-            result.barcode.displayValue
-          );
-          console.log("lastScannedBarcode", lastScannedBarcode);
-          console.log("this is one result", result.barcode);
+        console.log("resultEvent", result);
+        if (result.barcode.displayValue !== lastCode) {
+          lastCode = result.barcode.displayValue;
           alert(`Codigo de barras: ${result.barcode.displayValue}`);
         }
       }
     );
     await BarcodeScanner.startScan();
-    setIsScanning(true);
+    setCameraIsWorking(true);
   };
 
   const stopScan = async () => {
-    if (isScanning) {
+    if (cameraIsWorking) {
       // Solo intenta detener el escaneo si está activo
       document
         .querySelector("body")
         ?.classList.remove("barcode-scanner-active");
       await BarcodeScanner.removeAllListeners();
       await BarcodeScanner.stopScan();
-      setIsScanning(false); // Actualiza el estado para reflejar que el escaneo ha terminado
+      setCameraIsWorking(false); // Actualiza el estado para reflejar que el escaneo ha terminado
     }
   };
 
