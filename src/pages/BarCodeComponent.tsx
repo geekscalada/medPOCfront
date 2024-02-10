@@ -17,7 +17,7 @@ const BarcodeScannerComponent = () => {
   const [zoomRatio, setZoomRatio] = useState(1);
   const [cameraIsWorking, setCameraIsWorking] = useState(false);
 
-  const [lastScannedBarcode, setLastScannedBarcode] = useState<string>("");
+  
 
   const startScan = async () => {
     console.log("start scan ***************");
@@ -27,10 +27,13 @@ const BarcodeScannerComponent = () => {
     const listener = await BarcodeScanner.addListener(
       "barcodeScanned",
       async (result) => {
-        console.log("resultEvent", result);
-        if (result.barcode.displayValue !== lastCode) {
+        console.log("resultEvent", result.barcode);
+        if (
+          result.barcode.format === "EAN_13" &&
+          result.barcode.displayValue !== lastCode
+        ) {
           lastCode = result.barcode.displayValue;
-          alert(`Codigo de barras: ${result.barcode.displayValue}`);
+          alert(`Código de barras EAN 13: ${result.barcode.displayValue}`);
         }
       }
     );
