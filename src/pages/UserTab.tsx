@@ -47,8 +47,6 @@ const UserTab: React.FC = () => {
     true
   );
 
-  //generate tyoe of data
-
   // La función que pasas a useEffect se ejecutará después de que el renderizado esté completo.
   // Esto asegura que no bloqueará la visualización de la interfaz de usuario, incluso si
   // la operación tarda un tiempo.

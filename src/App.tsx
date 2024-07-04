@@ -51,7 +51,7 @@ import IonicHeaderComponent from "./components/MenuComponent";
 
 setupIonicReact();
 
-//TODO: new login with capacitor
+//TODO: new login with capacitor (???¿¿)
 
 //TODO: Check component bar code
 

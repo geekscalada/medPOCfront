@@ -6,7 +6,6 @@ import useApiDebouncedRequest from "../services/useApiDebouncedRequest";
 import { ArrayAllergens } from "../models/types/types";
 import ConfirmationAllergenSheeAction from "./ConfirmationAllergernModal";
 
-
 import useModalHelper from "../hooks/useModalHelper";
 import { ModalComposer } from "../services/types.services";
 
@@ -21,7 +20,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const { isModalOpen, openModal, closeModal } = useModalHelper();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const [componentes, setComponentes] = useState<string[]>([]);
 
   /**
@@ -33,9 +32,14 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
     setIsConfirmationModalOpen(false);
   };
 
+  const customCloseComponent = () => {
+    setSearchTerm("");
+    onClose();
+  };
+
   const optionsGet: AxiosRequestConfig = {
     method: "GET",
-    url: apiUrl + "/alergenos/" + searchTerm,
+    url: apiUrl + "/allergens/" + searchTerm,
     headers: { "Content-Type": "application/json" },
   };
 
@@ -62,6 +66,8 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
       return;
     }
 
+    console.log("Data--->", data);
+
     setComponentes(data?.allergens ?? []);
   }, [data, error]);
 
@@ -74,7 +80,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
           <IonItem>
             <IonSearchbar
               color={"medium"}
-              debounce={500}
+              debounce={300}
               data-testid="allergens-searchbar"
               placeholder="Search"
               onIonInput={(e) => setSearchTerm(e.detail.value!)}
@@ -113,7 +119,7 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
       <CustomModalComponent
         modalComposer={modalComposer}
         isOpen={isModalOpen}
-        onClose={onClose} // Callback
+        onClose={customCloseComponent} // Callback
       />
       <ConfirmationAllergenSheeAction
         isOpen={isConfirmationModalOpen}
