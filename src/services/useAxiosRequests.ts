@@ -1,44 +1,7 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import { useState, useEffect } from "react";
-import { useIonToast } from "@ionic/react";
 import useToastService from "../hooks/useToastService";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-});
-
-
-
-api.interceptors.response.use(
-  (response) => {
-    // Manejar respuestas exitosas
-    return response;
-  },
-  (error) => {
-    let customError;
-
-    // Manejar errores
-    if (error.response) {
-      // Errores que provienen del servidor
-      console.log("Error en la respuesta del servidor:", error.response.status);
-      customError = new Error(error.response.data.message);
-    } else if (error.request) {
-      // Errores que suceden al no recibir respuesta
-      console.log("No se recibió respuesta:", error.request);
-      customError = new Error(
-        "Error in the request, plese try again in a while"
-      );
-    } else {
-      // Errores que suceden al configurar la solicitud
-      console.log("Error en la solicitud:", error.message);
-      customError = new Error(
-        "Error in the request, plese try again in a while"
-      );
-    }
-
-    return Promise.reject(customError);
-  }
-);
+import responseMiddleware from "../middlewares/responseMiddleware";
 
 const useAxiosRequests = <T>(
   options: AxiosRequestConfig,
@@ -55,8 +18,14 @@ const useAxiosRequests = <T>(
 
   async function fetchData() {
     try {
-      const response = await api(options);
-      setData(response.data);
+      const response = await responseMiddleware(options);
+      // Check to avoid errors when the response is not a JSON
+      // for example in dev environment
+      if (response.headers["content-type"]?.includes("application/json")) {
+        setData(response.data);
+      } else {
+        throw new Error("Received non-JSON responseEEEEE");
+      }
     } catch (error: any) {
       setError(error);
       if (showToast) {
