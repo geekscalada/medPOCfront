@@ -28,7 +28,8 @@ const useApiDebouncedRequest = <T>(
   useEffect(() => {
     if (options.url) {
       url = options.url;
-      searchTerm = url.split("/").pop();
+      // Split by / or =
+      searchTerm = url.split(/[/=]/).pop();
     } else {
       const error = new Error("An url is needed to make the request");
 

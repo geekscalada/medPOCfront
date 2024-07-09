@@ -61,12 +61,9 @@ const AddAllergenComponentModal: React.FC<AddAllergenComponentModalProps> = ({
   useEffect(() => {
     // We refresh data when hook of useApiDebouncedRequest changes
 
-    if (error) {
-      console.log("Error");
+    if (error) {      
       return;
-    }
-
-    console.log("Data--->", data);
+    }    
 
     setComponentes(data?.allergens ?? []);
   }, [data, error]);
